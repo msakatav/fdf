@@ -27,17 +27,36 @@ typedef struct s_screen
 // --- read_mapのプロトタイプ宣言 ---
 t_point **read_map(const char *filename, int *width, int *height);
 
+// マップの最大範囲を調べる
+void get_map_bounds(t_point **map, int width, int height, float *max_x, float *max_y, float *min_x, float *min_y)
+{
+    *max_x = *max_y = -1e9;
+    *min_x = *min_y = 1e9;
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            if (map[y][x].pos.x > *max_x) *max_x = map[y][x].pos.x;
+            if (map[y][x].pos.x < *min_x) *min_x = map[y][x].pos.x;
+            if (map[y][x].pos.y > *max_y) *max_y = map[y][x].pos.y;
+            if (map[y][x].pos.y < *min_y) *min_y = map[y][x].pos.y;
+        }
+    }
+}
+
+// グローバル変数でスケールを保持
+float g_scale = 1.0;
+
 // 投影
 t_screen iso_project(t_vec3 pos)
 {
     float angle = M_PI / 6.0;
-    float scale = 80.0;
     float x = (pos.x - pos.z) * cos(angle);
     float y = pos.y + (pos.x + pos.z) * sin(angle);
 
     t_screen result;
-    result.x = WIDTH / 2 + x * scale;
-    result.y = HEIGHT / 2 - y * scale;
+    result.x = WIDTH / 2 + x * g_scale;
+    result.y = HEIGHT / 2 - y * g_scale;
     return result;
 }
 
@@ -143,6 +162,16 @@ int main(int argc, char **argv)
         printf("Failed to read map.\n");
         return 1;
     }
+
+    // --- スケール値を決定 ---
+    float max_x, max_y, min_x, min_y;
+    get_map_bounds(map, width, height, &max_x, &max_y, &min_x, &min_y);
+
+    float map_w = max_x - min_x + 1;
+    float map_h = max_y - min_y + 1;
+    float scale_x = (WIDTH * 0.8) / map_w;
+    float scale_y = (HEIGHT * 0.8) / map_h;
+    g_scale = scale_x < scale_y ? scale_x : scale_y;
 
     void *mlx = mlx_init();
     void *win = mlx_new_window(mlx, WIDTH, HEIGHT, "fdf");
