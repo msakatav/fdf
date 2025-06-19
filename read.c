@@ -4,16 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 
-typedef struct s_vec3
-{
-	float x, y, z;
-}	t_vec3;
 
-typedef struct s_point
-{
-	t_vec3 pos;
-	int	color;
-}	t_point;
+
 
 t_point **read_map(const char *filename, int *width, int *height)
 {
@@ -22,40 +14,51 @@ t_point **read_map(const char *filename, int *width, int *height)
         return NULL;
 
     char *line;
-    int w = 0, h = 0;
-    t_point **map = NULL;
+    int w = 0, h = 0, cap = 16;
+    t_point **map = malloc(sizeof(t_point *) * cap);
 
-    while (line = get_next_line(fd))
+    while ((line = get_next_line(fd)))
     {
-        int temp_w = 0;
-        char *token = strtok(line, " \n");
-        t_point *row = malloc(sizeof(t_point) * 1024);
+        // 1. 改行を\0に
+        char *p = ft_strchr(line, '\n');
+        if (p) *p = '\0';
 
-        while (token)
+        // 2. ft_splitで分割
+        char **tokens = ft_split(line, ' ');
+
+        // 3. 行の幅を数える
+        int temp_w = 0;
+        while (tokens[temp_w])
+            temp_w++;
+
+        t_point *row = malloc(sizeof(t_point) * temp_w);
+
+        for (int i = 0; i < temp_w; i++)
         {
             int z = 0;
             int color = 0xffffff;
-
-            if (strchr(token, ','))
+            if (ft_strchr(tokens[i], ','))
             {
-                sscanf(token, "%d,%x", &z, &color);
+                ft_parse_int_hex(tokens[i], "%d,%x", &z, &color);
             }
             else
-                z = atoi(token);
-
-            row[temp_w].pos = (t_vec3){temp_w, h, z};
-            row[temp_w].color = color;
-
-            temp_w++;
-            token = strtok(NULL, " \n");
+                z = ft_atoi(tokens[i]);
+            row[i].pos = (t_vec3){i, h, z};
+            row[i].color = color;
         }
 
         if (!w)
             w = temp_w;
 
-        map = realloc(map, sizeof(t_point *) * (h + 1));
+        // 4. 自作reallocでmapを拡張
+        if (h >= cap)
+        {
+            cap *= 2;
+            map = (t_point **)ft_realloc((void **)map, h, cap);
+        }
         map[h++] = row;
 
+        free_split(tokens);
         free(line);
     }
     close(fd);
