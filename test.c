@@ -50,20 +50,20 @@ float g_z_scale = 1.0;
 float g_offset_x = 0.0;
 float g_offset_y = 0.0;
 
-// 投影関数（スケール・オフセットを使う）
+// 投影関数（zが高さになるように修正）
 t_screen iso_project(t_vec3 pos)
 {
     float angle = M_PI / 6.0;
-    float x = (pos.x - pos.z * g_z_scale) * cos(angle);
-    float y = pos.y + (pos.x + pos.z * g_z_scale) * sin(angle);
+    float x = (pos.x - pos.y) * cos(angle);
+    float y = (pos.x + pos.y) * sin(angle) - pos.z * g_z_scale;
 
     t_screen result;
     result.x = WIDTH / 2 + (x - g_offset_x) * g_scale;
-    result.y = HEIGHT / 2 - (y - g_offset_y) * g_scale;
+    result.y = HEIGHT / 2 + (y - g_offset_y) * g_scale;
     return result;
 }
 
-// 投影前の座標を計算
+// 投影前の座標を計算（こちらも同じ式に合わせる）
 void get_projected_bounds(t_point **map, int width, int height, float *min_px, float *max_px, float *min_py, float *max_py)
 {
     float angle = M_PI / 6.0;
@@ -73,8 +73,8 @@ void get_projected_bounds(t_point **map, int width, int height, float *min_px, f
     {
         for (int x = 0; x < width; x++)
         {
-            float px = (map[y][x].pos.x - map[y][x].pos.z * g_z_scale) * cos(angle);
-            float py = map[y][x].pos.y + (map[y][x].pos.x + map[y][x].pos.z * g_z_scale) * sin(angle);
+            float px = (map[y][x].pos.x - map[y][x].pos.y) * cos(angle);
+            float py = (map[y][x].pos.x + map[y][x].pos.y) * sin(angle) - map[y][x].pos.z * g_z_scale;
             if (px < *min_px) *min_px = px;
             if (px > *max_px) *max_px = px;
             if (py < *min_py) *min_py = py;
