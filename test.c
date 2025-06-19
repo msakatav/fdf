@@ -44,19 +44,23 @@ void get_map_bounds(t_point **map, int width, int height, float *max_x, float *m
     }
 }
 
-// グローバル変数でスケールを保持
+// グローバル変数でスケールとオフセットを保持
 float g_scale = 1.0;
+float g_z_scale = 1.0;
+float g_offset_x = 0.0;
+float g_offset_y = 0.0;
 
 // 投影
 t_screen iso_project(t_vec3 pos)
 {
     float angle = M_PI / 6.0;
-    float x = (pos.x - pos.z) * cos(angle);
-    float y = pos.y + (pos.x + pos.z) * sin(angle);
+    float x = (pos.x - pos.z * g_z_scale) * cos(angle);
+    float y = pos.y + (pos.x + pos.z * g_z_scale) * sin(angle);
 
+    // 中心をオフセット
     t_screen result;
-    result.x = WIDTH / 2 + x * g_scale;
-    result.y = HEIGHT / 2 - y * g_scale;
+    result.x = WIDTH / 2 + (x - g_offset_x) * g_scale;
+    result.y = HEIGHT / 2 - (y - g_offset_y) * g_scale;
     return result;
 }
 
@@ -172,6 +176,27 @@ int main(int argc, char **argv)
     float scale_x = (WIDTH * 0.8) / map_w;
     float scale_y = (HEIGHT * 0.8) / map_h;
     g_scale = scale_x < scale_y ? scale_x : scale_y;
+
+    // z値のスケールも調整
+    float max_z = -1e9, min_z = 1e9;
+    for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++) {
+            if (map[y][x].pos.z > max_z) max_z = map[y][x].pos.z;
+            if (map[y][x].pos.z < min_z) min_z = map[y][x].pos.z;
+        }
+    float map_z = max_z - min_z;
+    if (map_z == 0) map_z = 1;
+    g_z_scale = g_scale * 0.5 / map_z;
+
+    // --- マップ中心を計算 ---
+    float center_x = (min_x + max_x) / 2.0;
+    float center_y = (min_y + max_y) / 2.0;
+    float center_z = (min_z + max_z) / 2.0;
+
+    // 中心点を投影空間に変換してオフセットに使う
+    float angle = M_PI / 6.0;
+    g_offset_x = (center_x - center_z * g_z_scale) * cos(angle);
+    g_offset_y = center_y + (center_x + center_z * g_z_scale) * sin(angle);
 
     void *mlx = mlx_init();
     void *win = mlx_new_window(mlx, WIDTH, HEIGHT, "fdf");
