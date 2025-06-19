@@ -83,26 +83,6 @@ void get_projected_bounds(t_point **map, int width, int height, float *min_px, f
     }
 }
 
-// グローバル変数でスケールとオフセットを保持
-float g_scale = 1.0;
-float g_z_scale = 1.0;
-float g_offset_x = 0.0;
-float g_offset_y = 0.0;
-
-// 投影
-t_screen iso_project(t_vec3 pos)
-{
-    float angle = M_PI / 6.0;
-    float x = (pos.x - pos.z * g_z_scale) * cos(angle);
-    float y = pos.y + (pos.x + pos.z * g_z_scale) * sin(angle);
-
-    // 中心をオフセット
-    t_screen result;
-    result.x = WIDTH / 2 + (x - g_offset_x) * g_scale;
-    result.y = HEIGHT / 2 - (y - g_offset_y) * g_scale;
-    return result;
-}
-
 // ピクセル描画
 void put_pixel(char *data, int x, int y, int color, int size_lien, int bpp)
 {
