@@ -10,44 +10,47 @@
 
 typedef struct s_vec3
 {
-	float x, y, z;
+    float x, y, z;
 }	t_vec3;
 
 typedef struct s_point
 {
-	t_vec3 pos;
-	int	color;
+    t_vec3 pos;
+    int	color;
 }	t_point;
 
 typedef struct s_screen
 {
-	int	x, y;
+    int	x, y;
 }	t_screen;
+
+// --- read_mapのプロトタイプ宣言 ---
+t_point **read_map(const char *filename, int *width, int *height);
 
 // 投影
 t_screen iso_project(t_vec3 pos)
 {
-	float angle = M_PI / 6.0;
-	float scale = 80.0;
-	float x = (pos.x - pos.z) * cos(angle);
-	float y = pos.y + (pos.x + pos.z) * sin(angle);
+    float angle = M_PI / 6.0;
+    float scale = 80.0;
+    float x = (pos.x - pos.z) * cos(angle);
+    float y = pos.y + (pos.x + pos.z) * sin(angle);
 
-	t_screen result;
-	result.x = WIDTH / 2 + x * scale;
-	result.y = HEIGHT / 2 - y * scale;
-	return result;
+    t_screen result;
+    result.x = WIDTH / 2 + x * scale;
+    result.y = HEIGHT / 2 - y * scale;
+    return result;
 }
 
 // ピクセル描画
 void put_pixel(char *data, int x, int y, int color, int size_lien, int bpp)
 {
-	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
-		return ;
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+        return ;
 
-	int index = y * size_lien + x * (bpp / 8);
-	data[index + 0] = color & 0xff;
-	data[index + 1] = (color >> 8) & 0xff;
-	data[index + 2] = (color >> 16) & 0xff;
+    int index = y * size_lien + x * (bpp / 8);
+    data[index + 0] = color & 0xff;
+    data[index + 1] = (color >> 8) & 0xff;
+    data[index + 2] = (color >> 16) & 0xff;
 }
 
 // 線形補間（Lerp）で色を混ぜる
@@ -101,43 +104,62 @@ void draw_line_lerp(char *data, t_screen a, t_screen b, int color_a, int color_b
     }
 }
 
-int main ()
+// --- マップ描画関数 ---
+void draw_map(char *img_data, t_point **map, int width, int height, int size_lien, int bpp)
 {
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            t_screen p = iso_project(map[y][x].pos);
+            // 右隣と線を引く
+            if (x + 1 < width)
+            {
+                t_screen p_right = iso_project(map[y][x + 1].pos);
+                draw_line_lerp(img_data, p, p_right, map[y][x].color, map[y][x + 1].color, size_lien, bpp);
+            }
+            // 下隣と線を引く
+            if (y + 1 < height)
+            {
+                t_screen p_down = iso_project(map[y + 1][x].pos);
+                draw_line_lerp(img_data, p, p_down, map[y][x].color, map[y + 1][x].color, size_lien, bpp);
+            }
+        }
+    }
+}
+
+int main(int argc, char **argv)
+{
+    if (argc != 2)
+    {
+        printf("Usage: %s <mapfile>\n", argv[0]);
+        return 1;
+    }
+
+    int width = 0, height = 0;
+    t_point **map = read_map(argv[1], &width, &height);
+    if (!map)
+    {
+        printf("Failed to read map.\n");
+        return 1;
+    }
+
     void *mlx = mlx_init();
-    void *win = mlx_new_window(mlx, WIDTH, HEIGHT, "Iso Cube");
+    void *win = mlx_new_window(mlx, WIDTH, HEIGHT, "fdf");
 
     int bpp, size_lien, endian;
     void *img = mlx_new_image(mlx, WIDTH, HEIGHT);
     char *img_data = mlx_get_data_addr(img, &bpp, &size_lien, &endian);
 
-    // 立方体の頂点（色を変えてみる例）
-    t_point vertices[8] = {
-        {{-1, -1, -1}, 0xff0000},
-        {{ 1, -1, -1}, 0x00ff00},
-        {{ 1,  1, -1}, 0x0000ff},
-        {{-1,  1, -1}, 0xffff00},
-        {{-1, -1,  1}, 0xff00ff},
-        {{ 1, -1,  1}, 0x00ffff},
-        {{ 1,  1,  1}, 0xffffff},
-        {{-1,  1,  1}, 0x000000},
-    };
-    int vertex_count = sizeof(vertices) / sizeof(vertices[0]);
-
-    // 頂点情報から隣接する頂点同士を自動で線描画（色補間）
-    for (int i = 0; i < vertex_count; i++) {
-        for (int j = i + 1; j < vertex_count; j++) {
-            int diff = 0;
-            if (vertices[i].pos.x != vertices[j].pos.x) diff++;
-            if (vertices[i].pos.y != vertices[j].pos.y) diff++;
-            if (vertices[i].pos.z != vertices[j].pos.z) diff++;
-            if (diff == 1) { // 1軸だけ異なる＝隣接
-                t_screen p1 = iso_project(vertices[i].pos);
-                t_screen p2 = iso_project(vertices[j].pos);
-                draw_line_lerp(img_data, p1, p2, vertices[i].color, vertices[j].color, size_lien, bpp);
-            }
-        }
-    }
+    draw_map(img_data, map, width, height, size_lien, bpp);
 
     mlx_put_image_to_window(mlx, win, img, 0, 0);
     mlx_loop(mlx);
+
+    // メモリ解放
+    for (int y = 0; y < height; y++)
+        free(map[y]);
+    free(map);
+
+    return 0;
 }

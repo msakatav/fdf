@@ -63,38 +63,3 @@ t_point **read_map(const char *filename, int *width, int *height)
     *height = h;
     return map;
 }
-
-int main(int argc, char **argv)
-{
-    if (argc != 2)
-    {
-        printf("Usage: %s <mapfile>\n", argv[0]);
-        return 1;
-    }
-
-    int width = 0, height = 0;
-    t_point **map = read_map(argv[1], &width, &height);
-
-    if (!map)
-    {
-        printf("Failed to read map.\n");
-        return 1;
-    }
-
-    printf("Map size: %d x %d\n", width, height);
-    for (int y = 0; y < height; y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            printf("(%d,%d,%d) color: %#06x  ", 
-                (int)map[y][x].pos.x, 
-                (int)map[y][x].pos.y, 
-                (int)map[y][x].pos.z, 
-                map[y][x].color);
-        }
-        printf("\n");
-        free(map[y]);
-    }
-    free(map);
-    return 0;
-}
