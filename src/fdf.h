@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 07:14:35 by root              #+#    #+#             */
-/*   Updated: 2025/06/20 11:16:09 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/21 02:46:04 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <math.h>
 # include "minilibx-linux/mlx.h"
 # include "get_next_line/get_next_line.h"
-# include "ft_printf.h"
+# include "ft_printf/includes/ft_printf.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -53,5 +53,11 @@ typedef struct s_mapinfo
 	int		cap;
 }	t_mapinfo;
 
+typedef struct s_projinfo
+{
+	float	scale;
+	float	offset_x;
+	float	offset_y;
+}	t_projinfo;
 
 #endif
