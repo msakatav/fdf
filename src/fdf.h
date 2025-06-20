@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 07:14:35 by root              #+#    #+#             */
-/*   Updated: 2025/06/20 07:17:51 by root             ###   ########.fr       */
+/*   Updated: 2025/06/20 11:16:09 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,14 @@ typedef struct s_screen
 	int	x;
 	int y;
 }	t_screen;
+
+typedef struct s_mapinfo
+{
+	t_point	**map;
+	int		w;
+	int		h;
+	int		cap;
+}	t_mapinfo;
+
 
 #endif
