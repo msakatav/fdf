@@ -6,15 +6,14 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:27:25 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/20 16:27:36 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/21 06:01:18 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // 投影前の座標を計算（zスケールなし）
-void	get_projected_bounds(
-    t_mapdata *mapdata, float *min_px, float *max_px, float *min_py, float *max_py)
+void	get_projected_bounds(t_mapdata *mapdata, float *min_px, float *max_px, float *min_py, float *max_py)
 {
     int		x;
     int		y;

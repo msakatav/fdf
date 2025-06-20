@@ -6,16 +6,14 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:25:42 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/20 16:25:55 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/21 06:02:08 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // 線描画（色補間対応）
-void	draw_line_lerp(
-    char *data, t_screen a, t_screen b, int color_a, int color_b,
-    int size_lien, int bpp)
+void	draw_line_lerp(char *data, t_screen a, t_screen b, int color_a, int color_b, int size_lien, int bpp)
 {
     int	dx;
     int	dy;

@@ -6,13 +6,13 @@
 #    By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/21 02:14:38 by msakata           #+#    #+#              #
-#    Updated: 2025/06/21 05:47:44 by msakata          ###   ########.fr        #
+#    Updated: 2025/06/21 05:55:32 by msakata          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I./src -lXext -lX11 -lm -lz
+CFLAGS = -Wall -Wextra -Werror -I./src -Ift_printf/libft -lXext -lX11 -lm -lz
 
 SRC =	src/put_pixel/draw_line_lerp.c \
 		src/put_pixel/draw_map.c \

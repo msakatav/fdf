@@ -6,15 +6,14 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:26:53 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/20 16:27:03 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/21 06:00:35 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // ピクセル描画
-void	put_pixel(
-    char *data, int x, int y, int color, int size_lien, int bpp)
+void	put_pixel(char *data, int x, int y, int color, int size_lien, int bpp)
 {
     int	index;
 

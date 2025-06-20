@@ -6,15 +6,14 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:28:15 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/20 16:28:24 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/21 06:01:38 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // マップの最大範囲を調べる
-void	get_map_bounds(
-    t_mapdata *mapdata, float *max_x, float *max_y, float *min_x, float *min_y)
+void	get_map_bounds(t_mapdata *mapdata, float *max_x, float *max_y, float *min_x, float *min_y)
 {
     int	x;
     int	y;
