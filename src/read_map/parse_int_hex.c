@@ -6,44 +6,75 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 08:19:19 by root              #+#    #+#             */
-/*   Updated: 2025/06/20 11:15:55 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/20 11:37:14 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int ft_parse_int_hex(const char *str, int *z, int *color)
+static int	parse_sign(const char *str, int *i)
 {
-	int i = 0;
-	int sign = 1;
+	int	sign;
+
+	sign = 1;
+	if (str[*i] == '-')
+	{
+		sign = -1;
+		(*i)++;
+	}
+	return (sign);
+}
+
+static int	parse_decimal(const char *str, int *i)
+{
+	int	val;
+
+	val = 0;
+	while (ft_isdigit(str[*i]))
+	{
+		val = val * 10 + (str[*i] - '0');
+		(*i)++;
+	}
+	return (val);
+}
+
+static int	parse_hex(const char *str, int *i)
+{
+	int	val;
+	int	v;
+
+	val = 0;
+	while (str[*i])
+	{
+		if ('0' <= str[*i] && str[*i] <= '9')
+			v = str[*i] - '0';
+		else if ('a' <= str[*i] && str[*i] <= 'f')
+			v = str[*i] - 'a' + 10;
+		else if ('A' <= str[*i] && str[*i] <= 'F')
+			v = str[*i] - 'A' + 10;
+		else
+			break ;
+		val = (val << 4) | v;
+		(*i)++;
+	}
+	return (val);
+}
+
+int	ft_parse_int_hex(const char *str, int *z, int *color)
+{
+	int	i;
+	int	sign;
+
+	i = 0;
 	*z = 0;
 	*color = 0;
-
-	while (ft_isspace(str[i])) i++;
-
-	if (str[i] == '-') { sign = -1; i++; }
-
-	while (ft_isdigit(str[i]))
-	{
-		*z = *z * 10 + (str[i] - '0');
+	while (ft_isspace(str[i]))
 		i++;
-	}
-	*z *= sign;
-
+	sign = parse_sign(str, &i);
+	*z = parse_decimal(str, &i) * sign;
 	if (str[i] != ',')
-		return 0;
+		return (0);
 	i++;
-
-	*color = 0;
-	while (str[i]) {
-		char c = str[i];
-		int v;
-		if ('0' <= c && c <= '9') v = c - '0';
-		else if ('a' <= c && c <= 'f') v = c - 'a' + 10;
-		else if ('A' <= c && c <= 'F') v = c - 'A' + 10;
-		else break;
-		*color = (*color << 4) | v;
-		i++;
-	}
-	return 2;
+	*color = parse_hex(str, &i);
+	return (2);
 }
