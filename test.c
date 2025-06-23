@@ -27,17 +27,17 @@ void adjust_z_scale(t_map *map, t_projinfo *proj)
 }
 
 // ----------------------- 等角投影 -----------------------
-t_screen iso_project(t_vec3 pos, t_projinfo *proj)
-{
-    float angle = M_PI / 6.0f;
-    float x = (pos.x - pos.y) * cosf(angle);
-    float y = (pos.x + pos.y) * sinf(angle) - pos.z * proj->z_scale;
+// t_screen iso_project(t_vec3 pos, t_projinfo *proj)
+// {
+//     float angle = M_PI / 6.0f;
+//     float x = (pos.x - pos.y) * cosf(angle);
+//     float y = (pos.x + pos.y) * sinf(angle) - pos.z * proj->z_scale;
 
-    t_screen result;
-    result.x = WIDTH / 2 + (x - proj->offset_x) * proj->scale;
-    result.y = HEIGHT / 2 + (y - proj->offset_y) * proj->scale;
-    return result;
-}
+//     t_screen result;
+//     result.x = WIDTH / 2 + (x - proj->offset_x) * proj->scale;
+//     result.y = HEIGHT / 2 + (y - proj->offset_y) * proj->scale;
+//     return result;
+// }
 
 // ----------------------- 投影後の座標範囲を取得 -----------------------
 void get_projected_bounds(t_map *map, t_projinfo *proj,
@@ -140,18 +140,18 @@ void draw_line_lerp(char *data, t_screen a, t_screen b,
     }
 }
 
-// ----------------------- マップ描画関数 -----------------------
+// ----------------------- マップ描画関数（カメラ対応） -----------------------
 void draw_map(t_ui *ui, t_map *map)
 {
     for (int y = 0; y < map->height; y++)
     {
         for (int x = 0; x < map->width; x++)
         {
-            t_screen p = iso_project(map->points[y][x].pos, &ui->proj);
+            t_screen p = iso_project(map->points[y][x].pos, &ui->proj, &ui->camera);
 
             if (x + 1 < map->width)
             {
-                t_screen p_right = iso_project(map->points[y][x + 1].pos, &ui->proj);
+                t_screen p_right = iso_project(map->points[y][x + 1].pos, &ui->proj, &ui->camera);
                 draw_line_lerp(ui->image.img_data, p, p_right,
                                map->points[y][x].color,
                                map->points[y][x + 1].color,
@@ -159,7 +159,7 @@ void draw_map(t_ui *ui, t_map *map)
             }
             if (y + 1 < map->height)
             {
-                t_screen p_down = iso_project(map->points[y + 1][x].pos, &ui->proj);
+                t_screen p_down = iso_project(map->points[y + 1][x].pos, &ui->proj, &ui->camera);
                 draw_line_lerp(ui->image.img_data, p, p_down,
                                map->points[y][x].color,
                                map->points[y + 1][x].color,

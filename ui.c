@@ -14,6 +14,11 @@ void on_prev(void *p)
     else
         ui->maps->current = ui->maps->count - 1;
 
+        // カメラをリセット
+    ui->camera.offset_x = 0.0f;
+    ui->camera.offset_y = 0.0f;
+    ui->camera.zoom     = 1.0f;
+
     if (ui->image.img)
         mlx_destroy_image(ui->mlx, ui->image.img);
     ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
@@ -44,6 +49,11 @@ void on_next(void *p)
         ui->maps->current++;
     else
         ui->maps->current = 0;
+
+        // カメラをリセット
+    ui->camera.offset_x = 0.0f;
+    ui->camera.offset_y = 0.0f;
+    ui->camera.zoom     = 1.0f;
 
     // ★ ここで新しいマップに対して再度スケール等を計算する
     // イメージを初期化し直す (古いイメージ破棄、再作成)

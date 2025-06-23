@@ -45,6 +45,13 @@ typedef struct s_image {
     int     endian;
 }   t_image;
 
+// カメラ構造体
+typedef struct s_camera {
+    float offset_x;
+    float offset_y;
+    float zoom;
+} t_camera;
+
 typedef struct s_ui {
     void        *mlx;
     void        *win;
@@ -55,6 +62,7 @@ typedef struct s_ui {
     t_image     image;
     t_projinfo  proj;
     t_maps      *maps;   // 追加: マップ一覧へのポインタ
+	t_camera	camera;
 } t_ui;
 
 typedef struct s_screen

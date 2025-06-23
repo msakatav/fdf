@@ -1,18 +1,6 @@
 #include "read_map.h"
 #include "fdf.h"
 
-// キーイベントハンドラ
-int key_press(int keycode, void *param)
-{
-    t_ui *ui = (t_ui *)param;
-    if (keycode == 65307) // LinuxでのESCコード
-    {
-        mlx_destroy_window(ui->mlx, ui->win);
-        exit(0);
-    }
-    return (0);
-}
-
 int main(int argc, char **argv)
 {
     t_maps maps;
@@ -33,6 +21,11 @@ int main(int argc, char **argv)
     ui.proj.scale = 1.0f;
     ui.proj.z_scale = 1.0f;
     ui.maps = &maps;
+
+    // カメラ初期値
+    ui.camera.offset_x = 0.0f;
+    ui.camera.offset_y = 0.0f;
+    ui.camera.zoom     = 1.0f;
 
     // ボタン
     add_button(&ui, 400, 900, "[■]", on_cube);
@@ -78,7 +71,7 @@ int main(int argc, char **argv)
     mlx_mouse_hook(ui.win, mouse_click, &ui);
     // キー入力(押下)をフック
     mlx_hook(ui.win, 2, 1L << 0, key_press, &ui);
-
+    mlx_hook(ui.win, 4, 1L << 2, mouse_scroll, &ui);
     mlx_loop(ui.mlx);
     return 0;
 }
