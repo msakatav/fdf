@@ -1,10 +1,15 @@
 #ifndef FDF_H
 # define FDF_H
 
-# include <mlx.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include "minilibx-linux/mlx.h"
+# include "ft_printf/includes/ft_printf.h"
+# include "get_next_line.h"
 # include "read_map.h"
 
 # define WIN_W 1920

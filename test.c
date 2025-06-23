@@ -1,9 +1,10 @@
 #include "fdf.h"
+
 #define WIDTH 800
 #define HEIGHT 600
 
-// zスケール値を決定（z範囲から適切な値をセット）
-void	set_z_scale(t_mapdata *mapdata, t_projinfo *proj)
+// zスケール値を決定
+void	set_z_scale(t_map *map, t_projinfo *proj)
 {
     int		x;
     int		y;
@@ -13,15 +14,16 @@ void	set_z_scale(t_mapdata *mapdata, t_projinfo *proj)
     max_z = -1e9;
     min_z = 1e9;
     y = 0;
-    while (y < mapdata->height)
+    while (y < map->height)
     {
         x = 0;
-        while (x < mapdata->width)
+        while (x < map->width)
         {
-            if (mapdata->map[y][x].pos.z > max_z)
-                max_z = mapdata->map[y][x].pos.z;
-            if (mapdata->map[y][x].pos.z < min_z)
-                min_z = mapdata->map[y][x].pos.z;
+            float z = map->points[y][x].pos.z;
+            if (z > max_z)
+                max_z = z;
+            if (z < min_z)
+                min_z = z;
             x++;
         }
         y++;
@@ -29,28 +31,27 @@ void	set_z_scale(t_mapdata *mapdata, t_projinfo *proj)
     if (max_z - min_z == 0)
         proj->z_scale = 1.0;
     else
-        proj->z_scale = 1.0; // 初期値。全体スケール決定前なので1.0でOK
+        proj->z_scale = 1.0; // 初期値。ここでは仮に1.0
 }
 
 // 投影関数（zスケール対応）
 t_screen	iso_project(t_vec3 pos, t_projinfo *proj)
 {
-    float		angle;
-    float		x;
-    float		y;
+    float	angle;
+    float	x;
+    float	y;
     t_screen	result;
 
     angle = M_PI / 6.0;
-    x = (pos.x - pos.y) * cos(angle);
-    y = (pos.x + pos.y) * sin(angle) - pos.z * proj->z_scale;
+    x = (pos.x - pos.y) * cosf(angle);
+    y = (pos.x + pos.y) * sinf(angle) - pos.z * proj->z_scale;
     result.x = WIDTH / 2 + (x - proj->offset_x) * proj->scale;
     result.y = HEIGHT / 2 + (y - proj->offset_y) * proj->scale;
     return (result);
 }
 
-// 投影後の座標範囲を計算（zスケール済みで）
-void	get_projected_bounds(
-    t_mapdata *mapdata, t_projinfo *proj,
+// 投影後の座標範囲を計算
+void	get_projected_bounds(t_map *map, t_projinfo *proj,
     float *min_px, float *max_px, float *min_py, float *max_py)
 {
     int		x;
@@ -63,15 +64,14 @@ void	get_projected_bounds(
     *min_px = *min_py = 1e9;
     *max_px = *max_py = -1e9;
     y = 0;
-    while (y < mapdata->height)
+    while (y < map->height)
     {
         x = 0;
-        while (x < mapdata->width)
+        while (x < map->width)
         {
-            px = (mapdata->map[y][x].pos.x - mapdata->map[y][x].pos.y)
-                * cos(angle);
-            py = (mapdata->map[y][x].pos.x + mapdata->map[y][x].pos.y)
-                * sin(angle) - mapdata->map[y][x].pos.z * proj->z_scale;
+            px = (map->points[y][x].pos.x - map->points[y][x].pos.y) * cosf(angle);
+            py = (map->points[y][x].pos.x + map->points[y][x].pos.y) * sinf(angle)
+                 - map->points[y][x].pos.z * proj->z_scale;
             if (px < *min_px)
                 *min_px = px;
             if (px > *max_px)
@@ -87,19 +87,21 @@ void	get_projected_bounds(
 }
 
 // 全体スケールとオフセットを決定
-void	set_scale_and_offset(t_projinfo *proj)
+void	set_scale_and_offset(t_projinfo *proj,
+    float min_px, float max_px, float min_py, float max_py)
 {
-    proj->proj_w = proj->max_px - proj->min_px;
-    proj->proj_h = proj->max_py - proj->min_py;
-    proj->scale_x = (WIDTH * 0.8) / proj->proj_w;
-    proj->scale_y = (HEIGHT * 0.8) / proj->proj_h;
-    proj->scale = proj->scale_x < proj->scale_y ? proj->scale_x : proj->scale_y;
-    proj->offset_x = (proj->min_px + proj->max_px) / 2.0;
-    proj->offset_y = (proj->min_py + proj->max_py) / 2.0;
+    float proj_w = max_px - min_px;
+    float proj_h = max_py - min_py;
+    float scale_x = (WIDTH * 0.8f) / proj_w;
+    float scale_y = (HEIGHT * 0.8f) / proj_h;
+
+    proj->scale = (scale_x < scale_y) ? scale_x : scale_y;
+    proj->offset_x = (min_px + max_px) * 0.5f;
+    proj->offset_y = (min_py + max_py) * 0.5f;
 }
 
 // zスケールを全体スケールに合わせて再調整
-void	adjust_z_scale(t_mapdata *mapdata, t_projinfo *proj)
+void	adjust_z_scale(t_map *map, t_projinfo *proj)
 {
     int		x;
     int		y;
@@ -109,23 +111,24 @@ void	adjust_z_scale(t_mapdata *mapdata, t_projinfo *proj)
     max_z = -1e9;
     min_z = 1e9;
     y = 0;
-    while (y < mapdata->height)
+    while (y < map->height)
     {
         x = 0;
-        while (x < mapdata->width)
+        while (x < map->width)
         {
-            if (mapdata->map[y][x].pos.z > max_z)
-                max_z = mapdata->map[y][x].pos.z;
-            if (mapdata->map[y][x].pos.z < min_z)
-                min_z = mapdata->map[y][x].pos.z;
+            float z = map->points[y][x].pos.z;
+            if (z > max_z)
+                max_z = z;
+            if (z < min_z)
+                min_z = z;
             x++;
         }
         y++;
     }
     if (max_z - min_z == 0)
-        proj->z_scale = 1.0;
+        proj->z_scale = 1.0f;
     else
-        proj->z_scale = proj->scale * 0.5 / (max_z - min_z);
+        proj->z_scale = proj->scale * 0.5f / (max_z - min_z);
 }
 
 // ピクセル描画

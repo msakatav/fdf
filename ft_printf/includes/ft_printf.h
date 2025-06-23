@@ -6,13 +6,13 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:42:14 by msakata           #+#    #+#             */
-/*   Updated: 2025/05/15 00:10:19 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/23 09:04:28 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# include "libft.h"
+# include "../libft/libft.h"
 # include "stdarg.h"
 
 int	ft_putchar(int c);

@@ -1,11 +1,6 @@
 #include "read_map.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include "get_next_line.h"
-#include "ft_printf.h"
+#include "fdf.h"
+
 
 static int get_row_width(char **tokens)
 {

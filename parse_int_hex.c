@@ -6,12 +6,12 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 08:19:19 by root              #+#    #+#             */
-/*   Updated: 2025/06/22 13:47:36 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/23 09:06:46 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "read_map.h"
-#include "ft_printf.h"
+#include "fdf.h"
 
 static int	parse_sign(const char *str, int *i)
 {

@@ -2,37 +2,6 @@
 #include "fdf.h"
 #include "read_map.h"
 
-typedef struct s_button {
-    int x, y, w, h;
-    char *label;
-    void (*on_click)(void *);
-} t_button;
-
-typedef struct s_slider {
-    int x, y, w;
-    int min, max;
-    int value;
-    int knob_radius;
-} t_slider;
-
-typedef struct s_image {
-    void    *img;
-    char    *img_data;
-    int     bpp;
-    int     size_lien;
-    int     endian;
-}   t_image;
-
-typedef struct s_ui {
-    void *mlx;
-    void *win;
-    t_button buttons[5];
-    int button_count;
-    t_slider slider;
-    int angle;
-    t_image image;
-} t_ui;
-
 // ---------------- Callbacks ------------------
 void on_cube(void *p) { printf("[cube]\n"); }
 void on_prev(void *p)
@@ -84,7 +53,7 @@ void draw_slider(t_ui *ui) {
     }
 }
 
-void draw_ui(t_ui *ui, t_map *map)
+void draw_ui(t_ui *ui)
 {
     // UI全体再描画: ウィンドウクリア→文字/string表示
     mlx_clear_window(ui->mlx, ui->win);

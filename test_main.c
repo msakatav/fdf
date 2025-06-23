@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "read_map.h"
 #include "fdf.h"
 
@@ -60,7 +59,7 @@ int main(int argc, char **argv)
     draw_map(&ui, &maps.maps[maps.current]);
 
     // UI描画
-    draw_ui(&ui, &maps.maps[maps.current]);
+    draw_ui(&ui);
     mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 900, 360);
 
     // イベントフック
