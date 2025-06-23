@@ -28,6 +28,7 @@ typedef struct s_button {
     int x, y, w, h;
     char *label;
     void (*on_click)(void *);
+    void *img; // 画像ポインタを追加
 } t_button;
 
 typedef struct s_slider {
@@ -73,7 +74,7 @@ typedef struct s_screen
 
 void    draw_map(t_ui *ui, t_map *map);
 void    draw_ui(t_ui *ui);
-void    add_button(t_ui *ui, int x, int y, char *label, void (*cb)(void *));
+void add_button(t_ui *ui, int x, int y, char *label, char *img_path, void (*cb)(void *));
 int     mouse_click(int btn, int x, int y, void *p);
 void	on_cube(void *p);
 void 	on_prev(void *p);

@@ -28,11 +28,11 @@ int main(int argc, char **argv)
     ui.camera.zoom     = 1.0f;
 
     // ボタン
-    add_button(&ui, 400, 900, "[■]", on_cube);
-    add_button(&ui, 500, 900, "[<<]", on_prev);
-    add_button(&ui, 600, 900, "[>]", on_play);
-    add_button(&ui, 700, 900, "[>>]", on_next);
-    add_button(&ui, 800, 900, "[#]", on_grid);
+    add_button(&ui, 400, 900, "[■]", "./icon/sycle.xpm", on_cube);
+    add_button(&ui, 500, 900, "[<<]", "./icon/sycle.xpm", on_prev);
+    add_button(&ui, 600, 900, "[>]", "./icon/sycle.xpm", on_play);
+    add_button(&ui, 700, 900, "[>>]", "./icon/sycle.xpm", on_next);
+    add_button(&ui, 800, 900, "[#]", "./icon/sycle.xpm", on_grid);
 
     // スライダー
     ui.slider.x = 400;

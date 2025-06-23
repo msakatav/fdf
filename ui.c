@@ -79,9 +79,12 @@ void on_next(void *p)
 void on_grid(void *p) { printf("[grid]\n"); }
 
 // ---------------- Helpers ------------------
-void add_button(t_ui *ui, int x, int y, char *label, void (*cb)(void *)) {
+// add_button を修正して画像を読み込む
+void add_button(t_ui *ui, int x, int y, char *label, char *img_path, void (*cb)(void *))
+{
     t_button *b = &ui->buttons[ui->button_count++];
     b->x = x; b->y = y; b->w = 60; b->h = 60; b->label = label; b->on_click = cb;
+    b->img = mlx_xpm_file_to_image(ui->mlx, img_path, &b->w, &b->h); // XPM画像を読み込む
 }
 
 void draw_slider(t_ui *ui) {
@@ -128,7 +131,11 @@ void draw_ui(t_ui *ui)
     // buttons
     for (int i = 0; i < ui->button_count; i++) {
         t_button *b = &ui->buttons[i];
-        mlx_string_put(ui->mlx, ui->win, b->x + 10, b->y + 20, 0x00FF00, b->label);
+        if (b->img)
+            mlx_put_image_to_window(ui->mlx, ui->win, b->img, b->x, b->y);
+        // 画像がない場合は文字で
+        else
+            mlx_string_put(ui->mlx, ui->win, b->x + 10, b->y + 20, 0x00FF00, b->label);
     }
 }
 
