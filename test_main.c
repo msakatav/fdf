@@ -55,12 +55,19 @@ int main(int argc, char **argv)
     ui.image.img_data = mlx_get_data_addr(
         ui.image.img, &ui.image.bpp, &ui.image.size_lien, &ui.image.endian);
 
+    // 読み込んだマップを元にスケール計算
+    float min_px, max_px, min_py, max_py;
+    get_projected_bounds(&maps.maps[maps.current], &ui.proj,
+                         &min_px, &max_px, &min_py, &max_py);
+    set_scale_and_offset(&ui.proj, min_px, max_px, min_py, max_py);
+    adjust_z_scale(&maps.maps[maps.current], &ui.proj);
+
     // マップ描画
     draw_map(&ui, &maps.maps[maps.current]);
 
     // UI描画
     draw_ui(&ui);
-    mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 900, 360);
+    mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 0, 0);
 
     // イベントフック
     mlx_mouse_hook(ui.win, mouse_click, &ui);

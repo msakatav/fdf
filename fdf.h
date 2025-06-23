@@ -72,4 +72,9 @@ void 	on_prev(void *p);
 void 	on_play(void *p);
 void 	on_next(void *p);
 void 	on_grid(void *p);
+void	adjust_z_scale(t_map *map, t_projinfo *proj);
+void	set_scale_and_offset(t_projinfo *proj,
+    float min_px, float max_px, float min_py, float max_py);
+void	get_projected_bounds(t_map *map, t_projinfo *proj,
+    float *min_px, float *max_px, float *min_py, float *max_py);
 #endif
