@@ -8,24 +8,47 @@ void on_prev(void *p)
 {
     t_ui *ui = (t_ui *)p;
     if (!ui->maps) return;
+
     if (ui->maps->current > 0)
         ui->maps->current--;
     else
         ui->maps->current = ui->maps->count - 1;
+
+    // 投影範囲を再取得し、スケール・オフセット・zスケールを調整
+    float min_px, max_px, min_py, max_py;
+    get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
+                         &min_px, &max_px, &min_py, &max_py);
+    set_scale_and_offset(&ui->proj, min_px, max_px, min_py, max_py);
+    adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
+
+    // 再描画
     draw_map(ui, &ui->maps->maps[ui->maps->current]);
-    draw_ui(ui, &ui->maps->maps[ui->maps->current]);
+    draw_ui(ui);
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->img.img, 0, 0);
 }
 void on_play(void *p) { printf("[play]\n"); }
 void on_next(void *p)
 {
     t_ui *ui = (t_ui *)p;
     if (!ui->maps) return;
+
     if (ui->maps->current < ui->maps->count - 1)
         ui->maps->current++;
     else
         ui->maps->current = 0;
+
+    // ★ ここで新しいマップに対して再度スケール等を計算する
+    float min_px, max_px, min_py, max_py;
+    get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
+                         &min_px, &max_px, &min_py, &max_py);
+    set_scale_and_offset(&ui->proj, min_px, max_px, min_py, max_py);
+    adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
+
+    // 再描画
     draw_map(ui, &ui->maps->maps[ui->maps->current]);
-    draw_ui(ui, &ui->maps->maps[ui->maps->current]);
+    draw_ui(ui);
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->img.img, 0, 0);
+    //
 }
 void on_grid(void *p) { printf("[grid]\n"); }
 

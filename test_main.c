@@ -33,6 +33,7 @@ int main(int argc, char **argv)
     ui.proj.offset_y = 0;
     ui.proj.scale = 1.0f;
     ui.proj.z_scale = 1.0f;
+    ui.maps = &maps;
 
     // ボタン
     add_button(&ui, 400, 900, "[■]", on_cube);
@@ -67,7 +68,7 @@ int main(int argc, char **argv)
 
     // UI描画
     draw_ui(&ui);
-    mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 0, 0);
+    mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 400, 100);
 
     // イベントフック
     mlx_mouse_hook(ui.win, mouse_click, &ui);
