@@ -14,7 +14,14 @@ void on_prev(void *p)
     else
         ui->maps->current = ui->maps->count - 1;
 
-    // 投影範囲を再取得し、スケール・オフセット・zスケールを調整
+    if (ui->image.img)
+        mlx_destroy_image(ui->mlx, ui->image.img);
+    ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
+    ui->image.img_data = mlx_get_data_addr(
+        ui->image.img, &ui->image.bpp,
+        &ui->image.size_lien, &ui->image.endian);
+
+    // スケール計算
     float min_px, max_px, min_py, max_py;
     get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
                          &min_px, &max_px, &min_py, &max_py);
@@ -24,7 +31,7 @@ void on_prev(void *p)
     // 再描画
     draw_map(ui, &ui->maps->maps[ui->maps->current]);
     draw_ui(ui);
-    mlx_put_image_to_window(ui->mlx, ui->win, ui->img.img, 0, 0);
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 400, 100);
 }
 void on_play(void *p) { printf("[play]\n"); }
 void on_next(void *p)
@@ -38,6 +45,15 @@ void on_next(void *p)
         ui->maps->current = 0;
 
     // ★ ここで新しいマップに対して再度スケール等を計算する
+    // イメージを初期化し直す (古いイメージ破棄、再作成)
+    if (ui->image.img)
+        mlx_destroy_image(ui->mlx, ui->image.img);
+    ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
+    ui->image.img_data = mlx_get_data_addr(
+        ui->image.img, &ui->image.bpp,
+        &ui->image.size_lien, &ui->image.endian);
+
+    // スケール計算
     float min_px, max_px, min_py, max_py;
     get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
                          &min_px, &max_px, &min_py, &max_py);
@@ -47,8 +63,7 @@ void on_next(void *p)
     // 再描画
     draw_map(ui, &ui->maps->maps[ui->maps->current]);
     draw_ui(ui);
-    mlx_put_image_to_window(ui->mlx, ui->win, ui->img.img, 0, 0);
-    //
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 400, 100);
 }
 void on_grid(void *p) { printf("[grid]\n"); }
 
