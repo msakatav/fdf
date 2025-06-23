@@ -22,16 +22,17 @@ void on_prev(void *p)
         &ui->image.size_lien, &ui->image.endian);
 
     // スケール計算
+    adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
     float min_px, max_px, min_py, max_py;
     get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
                          &min_px, &max_px, &min_py, &max_py);
     set_scale_and_offset(&ui->proj, min_px, max_px, min_py, max_py);
-    adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
 
     // 再描画
     draw_map(ui, &ui->maps->maps[ui->maps->current]);
     draw_ui(ui);
-    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 400, 100);
+
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
 void on_play(void *p) { printf("[play]\n"); }
 void on_next(void *p)
@@ -54,16 +55,16 @@ void on_next(void *p)
         &ui->image.size_lien, &ui->image.endian);
 
     // スケール計算
+    adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
     float min_px, max_px, min_py, max_py;
     get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
                          &min_px, &max_px, &min_py, &max_py);
     set_scale_and_offset(&ui->proj, min_px, max_px, min_py, max_py);
-    adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
 
     // 再描画
     draw_map(ui, &ui->maps->maps[ui->maps->current]);
     draw_ui(ui);
-    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 400, 100);
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
 void on_grid(void *p) { printf("[grid]\n"); }
 

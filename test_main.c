@@ -1,7 +1,6 @@
 #include "read_map.h"
 #include "fdf.h"
 
-
 // キーイベントハンドラ
 int key_press(int keycode, void *param)
 {
@@ -56,19 +55,24 @@ int main(int argc, char **argv)
     ui.image.img_data = mlx_get_data_addr(
         ui.image.img, &ui.image.bpp, &ui.image.size_lien, &ui.image.endian);
 
-    // 読み込んだマップを元にスケール計算
+    // --- スケール計算と描画 ---
+    // 1. zスケール自動調整
+    adjust_z_scale(&maps.maps[maps.current], &ui.proj);
+
+    // 2. 投影範囲取得
     float min_px, max_px, min_py, max_py;
     get_projected_bounds(&maps.maps[maps.current], &ui.proj,
                          &min_px, &max_px, &min_py, &max_py);
-    set_scale_and_offset(&ui.proj, min_px, max_px, min_py, max_py);
-    adjust_z_scale(&maps.maps[maps.current], &ui.proj);
 
-    // マップ描画
+    // 3. スケール・オフセット決定
+    set_scale_and_offset(&ui.proj, min_px, max_px, min_py, max_py);
+
+    // 4. マップ描画
     draw_map(&ui, &maps.maps[maps.current]);
 
     // UI描画
     draw_ui(&ui);
-    mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 400, 100);
+    mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 500, 100);
 
     // イベントフック
     mlx_mouse_hook(ui.win, mouse_click, &ui);
