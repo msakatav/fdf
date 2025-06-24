@@ -116,3 +116,4 @@ t_screen perspective_project(t_vec3 pos, t_projinfo *proj, t_camera *cam)
     result.y = HEIGHT / 2 + (py - pos.z * proj->z_scale * proj->scale * cam->zoom) * factor;
     return result;
 }
+

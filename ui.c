@@ -6,10 +6,10 @@
 void on_cube(void *p)
 {
     t_ui *ui = (t_ui *)p;
-    if (ui->mode == MODE_CUBE)
-        ui->mode = MODE_NONE;
+    if (ui->cube_mode == MODE_CUBE)
+        ui->cube_mode = MODE_NONE;
     else
-        ui->mode = MODE_CUBE;
+        ui->cube_mode = MODE_CUBE;
         // ★ 画像再生成・マップ再描画
     if (ui->image.img)
         mlx_destroy_image(ui->mlx, ui->image.img);
@@ -115,10 +115,10 @@ void on_next(void *p)
 void on_grid(void *p)
 {
     t_ui *ui = (t_ui *)p;
-    if (ui->mode == MODE_GRID)
-        ui->mode = MODE_NONE;
+    if (ui->grid_mode == MODE_GRID)
+        ui->grid_mode = MODE_NONE;
     else
-        ui->mode = MODE_GRID;
+        ui->grid_mode = MODE_GRID;
         // ★ 画像再生成・マップ再描画
     if (ui->image.img)
         mlx_destroy_image(ui->mlx, ui->image.img);
@@ -164,21 +164,34 @@ void draw_ui(t_ui *ui)
 {
     // UI全体再描画: ウィンドウクリア→文字/string表示
     mlx_clear_window(ui->mlx, ui->win);
-    mlx_string_put(ui->mlx, ui->win, 20, 30, 0xFFFFFF, "info");
-    mlx_string_put(ui->mlx, ui->win, 20, 70, 0xFFFFFF, "size: x=42, y=20");
-    mlx_string_put(ui->mlx, ui->win, 20, 100, 0xFFFFFF, "vertices: 840");
-    mlx_string_put(ui->mlx, ui->win, 20, 130, 0xFFFFFF, "z_max: 128");
-    mlx_string_put(ui->mlx, ui->win, 20, 160, 0xFFFFFF, "z_min: -16");
+
+    // --- キーバインド一覧 ---
+    mlx_string_put(ui->mlx, ui->win, 20, 30, 0xFFFFFF, "Key Bindings:");
+    mlx_string_put(ui->mlx, ui->win, 20, 60, 0xFFFFFF, "W/A/S/D : Move camera");
+    mlx_string_put(ui->mlx, ui->win, 20, 90, 0xFFFFFF, "Mouse Wheel : Zoom");
+    // mlx_string_put(ui->mlx, ui->win, 20, 120, 0xFFFFFF, "C : Toggle Cube Mode");
+    // mlx_string_put(ui->mlx, ui->win, 20, 150, 0xFFFFFF, "G : Toggle Grid/Sphere Mode");
+    // mlx_string_put(ui->mlx, ui->win, 20, 180, 0xFFFFFF, "P : Play/Stop Rotation");
+    // mlx_string_put(ui->mlx, ui->win, 20, 210, 0xFFFFFF, "Left/Right : Change Map");
+    mlx_string_put(ui->mlx, ui->win, 20, 120, 0xFFFFFF, "ESC : Exit");
 
     // image placeholder
     mlx_string_put(ui->mlx, ui->win, 900, 360, 0xFFFFFF, "image");
 
     // file list (display only)
-    mlx_string_put(ui->mlx, ui->win, 1650, 100, 0xFFFFFF, "sample.fdf");
-    mlx_string_put(ui->mlx, ui->win, 1650, 160, 0xFFFFFF, "42.fdf");
+    int i = 0;
+    int wpase = 0;
+    while (i < ui->maps->count)
+    {
+        mlx_string_put(ui->mlx, ui->win, 1650, 100 + wpase, 0xFFFFFF, ui->maps->maps[i].filename);
+        wpase += 60;
+        i++;
+    }
+    // mlx_string_put(ui->mlx, ui->win, 1650, 100, 0xFFFFFF, "sample.fdf");
+    // mlx_string_put(ui->mlx, ui->win, 1650, 160, 0xFFFFFF, "42.fdf");
 
     // current file
-    mlx_string_put(ui->mlx, ui->win, 850, 750, 0xFFFFFF, "sample.fdf");
+    mlx_string_put(ui->mlx, ui->win, 850, 750, 0xFFFFFF, ui->maps->maps[ui->maps->current].filename);
 
     // slider
     draw_slider(ui);
@@ -187,9 +200,9 @@ void draw_ui(t_ui *ui)
     for (int i = 0; i < ui->button_count; i++) {
         t_button *b = &ui->buttons[i];
         int is_active = 0;
-        if ((b->on_click == on_cube && ui->mode == MODE_CUBE) ||
+        if ((b->on_click == on_cube && ui->cube_mode == MODE_CUBE) ||
             (b->on_click == on_play && ui->mode == MODE_PLAY) ||
-            (b->on_click == on_grid && ui->mode == MODE_GRID))
+            (b->on_click == on_grid && ui->grid_mode == MODE_GRID))
             is_active = 1;
         if (is_active && b->img_active)
             mlx_put_image_to_window(ui->mlx, ui->win, b->img_active, b->x, b->y);

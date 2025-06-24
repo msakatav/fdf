@@ -69,6 +69,8 @@ typedef struct s_ui {
     t_button    buttons[5];
     int         button_count;
     t_mode      mode;
+    t_mode      cube_mode;
+    t_mode      grid_mode;
     t_slider    slider;
     int         angle;
     t_image     image;
