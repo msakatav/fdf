@@ -82,7 +82,7 @@ int mouse_scroll(int button, int x, int y, void *param)
 // iso_projectで camera.offset_x, offset_y, zoom を考慮
 t_screen iso_project(t_vec3 pos, t_projinfo *proj, t_camera *cam)
 {
-    float angle = proj->z_angle * M_PI / 180.0f;
+    float angle = M_PI / 6.0f;
     float x = (pos.x - pos.y) * cosf(angle);
     float y = (pos.x + pos.y) * sinf(angle) - pos.z * proj->z_scale;
 

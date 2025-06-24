@@ -131,15 +131,32 @@ void draw_line_lerp(char *data, t_screen a, t_screen b,
 // ----------------------- マップ描画関数（カメラ対応） -----------------------
 void draw_map(t_ui *ui, t_map *map)
 {
+    float rad = ui->proj.z_angle * M_PI / 180.0f; // ←角度をラジアンに
+    float cosz = cosf(rad);
+    float sinz = sinf(rad);
+
     for (int y = 0; y < map->height; y++)
     {
         for (int x = 0; x < map->width; x++)
         {
-            t_screen p = iso_project(map->points[y][x].pos, &ui->proj, &ui->camera);
+            // --- z軸回転を適用 ---
+            t_vec3 orig = map->points[y][x].pos;
+            t_vec3 rot;
+            rot.x = orig.x * cosz - orig.y * sinz;
+            rot.y = orig.x * sinz + orig.y * cosz;
+            rot.z = orig.z;
+
+            t_screen p = iso_project(rot, &ui->proj, &ui->camera);
 
             if (x + 1 < map->width)
             {
-                t_screen p_right = iso_project(map->points[y][x + 1].pos, &ui->proj, &ui->camera);
+                t_vec3 orig_r = map->points[y][x + 1].pos;
+                t_vec3 rot_r;
+                rot_r.x = orig_r.x * cosz - orig_r.y * sinz;
+                rot_r.y = orig_r.x * sinz + orig_r.y * cosz;
+                rot_r.z = orig_r.z;
+                t_screen p_right = iso_project(rot_r, &ui->proj, &ui->camera);
+
                 draw_line_lerp(ui->image.img_data, p, p_right,
                                map->points[y][x].color,
                                map->points[y][x + 1].color,
@@ -147,7 +164,13 @@ void draw_map(t_ui *ui, t_map *map)
             }
             if (y + 1 < map->height)
             {
-                t_screen p_down = iso_project(map->points[y + 1][x].pos, &ui->proj, &ui->camera);
+                t_vec3 orig_d = map->points[y + 1][x].pos;
+                t_vec3 rot_d;
+                rot_d.x = orig_d.x * cosz - orig_d.y * sinz;
+                rot_d.y = orig_d.x * sinz + orig_d.y * cosz;
+                rot_d.z = orig_d.z;
+                t_screen p_down = iso_project(rot_d, &ui->proj, &ui->camera);
+
                 draw_line_lerp(ui->image.img_data, p, p_down,
                                map->points[y][x].color,
                                map->points[y + 1][x].color,

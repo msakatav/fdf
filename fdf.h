@@ -100,5 +100,6 @@ void	get_projected_bounds(t_map *map, t_projinfo *proj,
 int key_press(int keycode, void *param);
 int mouse_scroll(int button, int x, int y, void *param);
 t_screen iso_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
+int play_loop(void *param);
 
 #endif

@@ -18,7 +18,7 @@ int play_loop(void *param)
             &ui->image.size_lien, &ui->image.endian);
 
         // 投影パラメータにz_angleを反映
-        ui->proj.proj.z_angle = ui->proj.z_angle; // ← draw_mapでこの値を使うようにする
+        ui->proj.z_angle = ui->proj.z_angle; // ← draw_mapでこの値を使うようにする
 
         draw_map(ui, &ui->maps->maps[ui->maps->current]);
         draw_ui(ui);
