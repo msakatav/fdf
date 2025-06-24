@@ -3,7 +3,15 @@
 #include "read_map.h"
 
 // ---------------- Callbacks ------------------
-void on_cube(void *p) { t_ui *ui = (t_ui *)p; ui->mode = MODE_CUBE; draw_ui(ui); }
+void on_cube(void *p)
+{
+    t_ui *ui = (t_ui *)p;
+    if (ui->mode = MODE_CUBE)
+        ui->mode = MODE_NONE;
+    else
+        ui->mode = MODE_CUBE;
+    draw_ui(ui);
+}
 void on_prev(void *p)
 {
     t_ui *ui = (t_ui *)p;
@@ -39,7 +47,15 @@ void on_prev(void *p)
 
     mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
-void on_play(void *p) { t_ui *ui = (t_ui *)p; ui->mode = MODE_PLAY; draw_ui(ui); }
+void on_play(void *p)
+{
+    t_ui *ui = (t_ui *)p;
+    if (ui->mode == MODE_PLAY)
+        ui->mode = MODE_NONE;
+    else
+        ui->mode = MODE_PLAY;
+    draw_ui(ui);
+}
 void on_next(void *p)
 {
     t_ui *ui = (t_ui *)p;
@@ -76,7 +92,15 @@ void on_next(void *p)
     draw_ui(ui);
     mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
-void on_grid(void *p) { t_ui *ui = (t_ui *)p; ui->mode = MODE_GRID; draw_ui(ui); }
+void on_grid(void *p)
+{
+    t_ui *ui = (t_ui *)p;
+    if (ui->mode == MODE_GRID)
+        ui->mode = MODE_NONE;
+    else
+        ui->mode = MODE_GRID;
+    draw_ui(ui);
+}
 
 // ---------------- Helpers ------------------
 // add_button を修正して画像を読み込む

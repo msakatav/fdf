@@ -19,6 +19,7 @@
 
 typedef enum
 {
+    MODE_NONE,
     MODE_CUBE,
     MODE_PLAY,
     MODE_GRID
@@ -83,7 +84,7 @@ typedef struct s_screen
 
 void    draw_map(t_ui *ui, t_map *map);
 void    draw_ui(t_ui *ui);
-void add_button(t_ui *ui, int x, int y, char *label, char *img_path, void (*cb)(void *));
+void add_button(t_ui *ui, int x, int y, char *label, char *img_path, char *img_active_path, void (*cb)(void *));
 int     mouse_click(int btn, int x, int y, void *p);
 void	on_cube(void *p);
 void 	on_prev(void *p);
