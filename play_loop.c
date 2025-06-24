@@ -5,9 +5,12 @@ int play_loop(void *param)
 {
     t_ui *ui = (t_ui *)param;
     if (ui->mode == MODE_PLAY) {
-        ui->proj.z_angle += 2.0f; // 2度ずつ回転（速度は調整可）
+        ui->proj.z_angle += 0.5f; // 2度ずつ回転（速度は調整可）
         if (ui->proj.z_angle >= 360.0f)
             ui->proj.z_angle -= 360.0f;
+
+        // ★ スライダー値と同期
+        ui->slider.value = (int)ui->proj.z_angle;
 
         // 画像再生成・再描画
         if (ui->image.img)

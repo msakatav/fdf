@@ -91,3 +91,19 @@ t_screen iso_project(t_vec3 pos, t_projinfo *proj, t_camera *cam)
     result.y = HEIGHT / 2 + (y - proj->offset_y + cam->offset_y) * proj->scale * cam->zoom;
     return (result);
 }
+
+t_screen perspective_project(t_vec3 pos, t_projinfo *proj, t_camera *cam)
+{
+    float camera_z = 1000.0f;
+    float fov = 800.0f;
+
+    float x = pos.x + cam->offset_x;
+    float y = pos.y + cam->offset_y;
+    float z = pos.z * proj->z_scale;
+
+    float factor = fov / (camera_z - z + 1.0f);
+    t_screen result;
+    result.x = WIDTH / 2 + (x - proj->offset_x) * proj->scale * cam->zoom * factor;
+    result.y = HEIGHT / 2 + (y - proj->offset_y) * proj->scale * cam->zoom *factor;
+    return (result);
+}

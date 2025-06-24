@@ -6,7 +6,7 @@
 void on_cube(void *p)
 {
     t_ui *ui = (t_ui *)p;
-    if (ui->mode = MODE_CUBE)
+    if (ui->mode == MODE_CUBE)
         ui->mode = MODE_NONE;
     else
         ui->mode = MODE_CUBE;
@@ -179,6 +179,7 @@ int mouse_click(int btn, int x, int y, void *p)
 
     if (btn == 1 && y >= s->y - 10 && y <= s->y + 10 && x >= s->x && x <= s->x + s->w) {
         s->value = (x - s->x) * (s->max - s->min) / s->w + s->min;
+        ui->proj.z_angle = (float)s->value;
         printf("angle: %d\n", s->value);
         draw_ui(ui);
         return 0;
