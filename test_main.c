@@ -28,11 +28,11 @@ int main(int argc, char **argv)
     ui.camera.zoom     = 1.0f;
 
     // ボタン
-    add_button(&ui, 400, 900, "[■]", "./icon/sycle.xpm", on_cube);
-    add_button(&ui, 500, 900, "[<<]", "./icon/sycle.xpm", on_prev);
-    add_button(&ui, 600, 900, "[>]", "./icon/sycle.xpm", on_play);
-    add_button(&ui, 700, 900, "[>>]", "./icon/sycle.xpm", on_next);
-    add_button(&ui, 800, 900, "[#]", "./icon/sycle.xpm", on_grid);
+    add_button(&ui, 400, 900, "[■]", "./icon/cube.xpm", on_cube);
+    add_button(&ui, 650, 900, "[<<]", "./icon/prev.xpm", on_prev);
+    add_button(&ui, 1650/2, 900, "[>]", "./icon/play.xpm", on_play);
+    add_button(&ui, 1000, 900, "[>>]", "./icon/next.xpm", on_next);
+    add_button(&ui, 1250, 900, "[#]", "./icon/sycle.xpm", on_grid);
 
     // スライダー
     ui.slider.x = 400;
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     mlx_put_image_to_window(ui.mlx, ui.win, ui.image.img, 500, 100);
 
     // イベントフック
-    mlx_mouse_hook(ui.win, mouse_click, &ui);
+    mlx_hook(ui.win, 5, 1L << 3, mouse_click, &ui);
     // キー入力(押下)をフック
     mlx_hook(ui.win, 2, 1L << 0, key_press, &ui);
     mlx_hook(ui.win, 4, 1L << 2, mouse_scroll, &ui);

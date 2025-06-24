@@ -86,4 +86,8 @@ void	set_scale_and_offset(t_projinfo *proj,
     float min_px, float max_px, float min_py, float max_py);
 void	get_projected_bounds(t_map *map, t_projinfo *proj,
     float *min_px, float *max_px, float *min_py, float *max_py);
+int key_press(int keycode, void *param);
+int mouse_scroll(int button, int x, int y, void *param);
+t_screen iso_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
+
 #endif
