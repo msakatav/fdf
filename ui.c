@@ -3,7 +3,7 @@
 #include "read_map.h"
 
 // ---------------- Callbacks ------------------
-void on_cube(void *p) { printf("[cube]\n"); }
+void on_cube(void *p) { t_ui *ui = (t_ui *)p; ui->mode = MODE_CUBE; draw_ui(ui); }
 void on_prev(void *p)
 {
     t_ui *ui = (t_ui *)p;
@@ -39,7 +39,7 @@ void on_prev(void *p)
 
     mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
-void on_play(void *p) { printf("[play]\n"); }
+void on_play(void *p) { t_ui *ui = (t_ui *)p; ui->mode = MODE_PLAY; draw_ui(ui); }
 void on_next(void *p)
 {
     t_ui *ui = (t_ui *)p;
@@ -76,15 +76,16 @@ void on_next(void *p)
     draw_ui(ui);
     mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
-void on_grid(void *p) { printf("[grid]\n"); }
+void on_grid(void *p) { t_ui *ui = (t_ui *)p; ui->mode = MODE_GRID; draw_ui(ui); }
 
 // ---------------- Helpers ------------------
 // add_button を修正して画像を読み込む
-void add_button(t_ui *ui, int x, int y, char *label, char *img_path, void (*cb)(void *))
+void add_button(t_ui *ui, int x, int y, char *label, char *img_path, char *img_active_path, void (*cb)(void *))
 {
     t_button *b = &ui->buttons[ui->button_count++];
     b->x = x; b->y = y; b->w = 60; b->h = 60; b->label = label; b->on_click = cb;
-    b->img = mlx_xpm_file_to_image(ui->mlx, img_path, &b->w, &b->h); // XPM画像を読み込む
+    b->img = mlx_xpm_file_to_image(ui->mlx, img_path, &b->w, &b->h);
+    b->img_active = mlx_xpm_file_to_image(ui->mlx, img_active_path, &b->w, &b->h);
 }
 
 void draw_slider(t_ui *ui) {
@@ -131,7 +132,14 @@ void draw_ui(t_ui *ui)
     // buttons
     for (int i = 0; i < ui->button_count; i++) {
         t_button *b = &ui->buttons[i];
-        if (b->img)
+        int is_active = 0;
+        if ((b->on_click == on_cube && ui->mode == MODE_CUBE) ||
+            (b->on_click == on_play && ui->mode == MODE_PLAY) ||
+            (b->on_click == on_grid && ui->mode == MODE_GRID))
+            is_active = 1;
+        if (is_active && b->img_active)
+            mlx_put_image_to_window(ui->mlx, ui->win, b->img_active, b->x, b->y);
+        else if (b->img)
             mlx_put_image_to_window(ui->mlx, ui->win, b->img, b->x, b->y);
         // 画像がない場合は文字で
         else

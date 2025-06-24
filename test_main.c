@@ -29,10 +29,10 @@ int main(int argc, char **argv)
 
     // ボタン
     add_button(&ui, 400, 900, "[■]", "./icon/cube.xpm", on_cube);
-    add_button(&ui, 650, 900, "[<<]", "./icon/prev.xpm", on_prev);
-    add_button(&ui, 1650/2, 900, "[>]", "./icon/play.xpm", on_play);
-    add_button(&ui, 1000, 900, "[>>]", "./icon/next.xpm", on_next);
-    add_button(&ui, 1250, 900, "[#]", "./icon/sycle.xpm", on_grid);
+    add_button(&ui, 650, 900, "[<<]", "./icon/prev.xpm", "./icon/prev.xpm", on_prev);
+    add_button(&ui, 1650/2, 900, "[>]", "./icon/play.xpm", "./icon/pause.xpm", on_play);
+    add_button(&ui, 1000, 900, "[>>]", "./icon/next.xpm", "./icon/next.xpm", on_next);
+    add_button(&ui, 1250, 900, "[#]", "./icon/grid.xpm", "./icon/radio.xpm", on_grid);
 
     // スライダー
     ui.slider.x = 400;

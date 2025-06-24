@@ -17,6 +17,13 @@
 # define WIDTH 800
 # define HEIGHT 600
 
+typedef enum
+{
+    MODE_CUBE,
+    MODE_PLAY,
+    MODE_GRID
+}   t_mode;
+
 typedef struct s_projinfo {
     float offset_x;
     float offset_y;
@@ -29,6 +36,7 @@ typedef struct s_button {
     char *label;
     void (*on_click)(void *);
     void *img; // 画像ポインタを追加
+    void *img_active;
 } t_button;
 
 typedef struct s_slider {
@@ -58,6 +66,7 @@ typedef struct s_ui {
     void        *win;
     t_button    buttons[5];
     int         button_count;
+    t_mode      mode;
     t_slider    slider;
     int         angle;
     t_image     image;
