@@ -69,7 +69,6 @@ int main(int argc, char **argv)
 
     ui.proj.z_angle = 0.0f;
     mlx_loop_hook(ui.mlx, play_loop, &ui);
-    mlx_loop(ui.mlx);
     // イベントフック
     mlx_hook(ui.win, 5, 1L << 3, mouse_click, &ui);
     // キー入力(押下)をフック
