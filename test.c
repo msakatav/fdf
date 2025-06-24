@@ -131,30 +131,50 @@ void draw_line_lerp(char *data, t_screen a, t_screen b,
 // ----------------------- マップ描画関数（カメラ対応） -----------------------
 void draw_map(t_ui *ui, t_map *map)
 {
-    float rad = ui->proj.z_angle * M_PI / 180.0f; // ←角度をラジアンに
+    float rad = ui->proj.z_angle * M_PI / 180.0f;
     float cosz = cosf(rad);
     float sinz = sinf(rad);
+
+    // 中心座標を計算
+    float center_x = (map->width - 1) / 2.0f;
+    float center_y = (map->height - 1) / 2.0f;
 
     for (int y = 0; y < map->height; y++)
     {
         for (int x = 0; x < map->width; x++)
         {
-            // --- z軸回転を適用 ---
+            // --- 中心を原点に移動 ---
             t_vec3 orig = map->points[y][x].pos;
+            t_vec3 tmp;
+            tmp.x = orig.x - center_x;
+            tmp.y = orig.y - center_y;
+            tmp.z = orig.z;
+
+            // --- z軸回転 ---
             t_vec3 rot;
-            rot.x = orig.x * cosz - orig.y * sinz;
-            rot.y = orig.x * sinz + orig.y * cosz;
-            rot.z = orig.z;
+            rot.x = tmp.x * cosz - tmp.y * sinz;
+            rot.y = tmp.x * sinz + tmp.y * cosz;
+            rot.z = tmp.z;
+
+            // --- 元の位置に戻す ---
+            rot.x += center_x;
+            rot.y += center_y;
 
             t_screen p = iso_project(rot, &ui->proj, &ui->camera);
 
             if (x + 1 < map->width)
             {
                 t_vec3 orig_r = map->points[y][x + 1].pos;
+                t_vec3 tmp_r;
+                tmp_r.x = orig_r.x - center_x;
+                tmp_r.y = orig_r.y - center_y;
+                tmp_r.z = orig_r.z;
                 t_vec3 rot_r;
-                rot_r.x = orig_r.x * cosz - orig_r.y * sinz;
-                rot_r.y = orig_r.x * sinz + orig_r.y * cosz;
-                rot_r.z = orig_r.z;
+                rot_r.x = tmp_r.x * cosz - tmp_r.y * sinz;
+                rot_r.y = tmp_r.x * sinz + tmp_r.y * cosz;
+                rot_r.z = tmp_r.z;
+                rot_r.x += center_x;
+                rot_r.y += center_y;
                 t_screen p_right = iso_project(rot_r, &ui->proj, &ui->camera);
 
                 draw_line_lerp(ui->image.img_data, p, p_right,
@@ -165,10 +185,16 @@ void draw_map(t_ui *ui, t_map *map)
             if (y + 1 < map->height)
             {
                 t_vec3 orig_d = map->points[y + 1][x].pos;
+                t_vec3 tmp_d;
+                tmp_d.x = orig_d.x - center_x;
+                tmp_d.y = orig_d.y - center_y;
+                tmp_d.z = orig_d.z;
                 t_vec3 rot_d;
-                rot_d.x = orig_d.x * cosz - orig_d.y * sinz;
-                rot_d.y = orig_d.x * sinz + orig_d.y * cosz;
-                rot_d.z = orig_d.z;
+                rot_d.x = tmp_d.x * cosz - tmp_d.y * sinz;
+                rot_d.y = tmp_d.x * sinz + tmp_d.y * cosz;
+                rot_d.z = tmp_d.z;
+                rot_d.x += center_x;
+                rot_d.y += center_y;
                 t_screen p_down = iso_project(rot_d, &ui->proj, &ui->camera);
 
                 draw_line_lerp(ui->image.img_data, p, p_down,
