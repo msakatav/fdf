@@ -30,6 +30,7 @@ typedef struct s_projinfo {
     float offset_y;
     float scale;
     float z_scale;
+    float z_angle;
 } t_projinfo;
 
 typedef struct s_button {

@@ -26,18 +26,6 @@ void adjust_z_scale(t_map *map, t_projinfo *proj)
     if (proj->z_scale < 0.05f) proj->z_scale = 0.05f;
 }
 
-// ----------------------- 等角投影 -----------------------
-// t_screen iso_project(t_vec3 pos, t_projinfo *proj)
-// {
-//     float angle = M_PI / 6.0f;
-//     float x = (pos.x - pos.y) * cosf(angle);
-//     float y = (pos.x + pos.y) * sinf(angle) - pos.z * proj->z_scale;
-
-//     t_screen result;
-//     result.x = WIDTH / 2 + (x - proj->offset_x) * proj->scale;
-//     result.y = HEIGHT / 2 + (y - proj->offset_y) * proj->scale;
-//     return result;
-// }
 
 // ----------------------- 投影後の座標範囲を取得 -----------------------
 void get_projected_bounds(t_map *map, t_projinfo *proj,
