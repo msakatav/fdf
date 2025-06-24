@@ -10,7 +10,17 @@ void on_cube(void *p)
         ui->mode = MODE_NONE;
     else
         ui->mode = MODE_CUBE;
+        // ★ 画像再生成・マップ再描画
+    if (ui->image.img)
+        mlx_destroy_image(ui->mlx, ui->image.img);
+    ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
+    ui->image.img_data = mlx_get_data_addr(
+        ui->image.img, &ui->image.bpp,
+        &ui->image.size_lien, &ui->image.endian);
+
+    draw_map(ui, &ui->maps->maps[ui->maps->current]);
     draw_ui(ui);
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
 void on_prev(void *p)
 {
@@ -54,7 +64,17 @@ void on_play(void *p)
         ui->mode = MODE_NONE;
     else
         ui->mode = MODE_PLAY;
+        // ★ 画像再生成・マップ再描画
+    if (ui->image.img)
+        mlx_destroy_image(ui->mlx, ui->image.img);
+    ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
+    ui->image.img_data = mlx_get_data_addr(
+        ui->image.img, &ui->image.bpp,
+        &ui->image.size_lien, &ui->image.endian);
+
+    draw_map(ui, &ui->maps->maps[ui->maps->current]);
     draw_ui(ui);
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
 void on_next(void *p)
 {
@@ -99,7 +119,17 @@ void on_grid(void *p)
         ui->mode = MODE_NONE;
     else
         ui->mode = MODE_GRID;
+        // ★ 画像再生成・マップ再描画
+    if (ui->image.img)
+        mlx_destroy_image(ui->mlx, ui->image.img);
+    ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
+    ui->image.img_data = mlx_get_data_addr(
+        ui->image.img, &ui->image.bpp,
+        &ui->image.size_lien, &ui->image.endian);
+
+    draw_map(ui, &ui->maps->maps[ui->maps->current]);
     draw_ui(ui);
+    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
 }
 
 // ---------------- Helpers ------------------
@@ -181,7 +211,17 @@ int mouse_click(int btn, int x, int y, void *p)
         s->value = (x - s->x) * (s->max - s->min) / s->w + s->min;
         ui->proj.z_angle = (float)s->value;
         printf("angle: %d\n", s->value);
+            // ★ 画像再生成・マップ再描画
+        if (ui->image.img)
+            mlx_destroy_image(ui->mlx, ui->image.img);
+        ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
+        ui->image.img_data = mlx_get_data_addr(
+            ui->image.img, &ui->image.bpp,
+            &ui->image.size_lien, &ui->image.endian);
+
+        draw_map(ui, &ui->maps->maps[ui->maps->current]);
         draw_ui(ui);
+        mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
         return 0;
     }
     for (int i = 0; i < ui->button_count; i++)

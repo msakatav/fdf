@@ -160,7 +160,12 @@ void draw_map(t_ui *ui, t_map *map)
             rot.x += center_x;
             rot.y += center_y;
 
-            t_screen p = iso_project(rot, &ui->proj, &ui->camera);
+            // ★ ここで投影方式を切り替え
+            t_screen p;
+            if (ui->mode == MODE_CUBE)
+                p = perspective_project(rot, &ui->proj, &ui->camera);
+            else
+                p = iso_project(rot, &ui->proj, &ui->camera);
 
             if (x + 1 < map->width)
             {
@@ -175,7 +180,11 @@ void draw_map(t_ui *ui, t_map *map)
                 rot_r.z = tmp_r.z;
                 rot_r.x += center_x;
                 rot_r.y += center_y;
-                t_screen p_right = iso_project(rot_r, &ui->proj, &ui->camera);
+                t_screen p_right;
+                if (ui->mode == MODE_CUBE)
+                    p_right = perspective_project(rot_r, &ui->proj, &ui->camera);
+                else
+                    p_right = iso_project(rot_r, &ui->proj, &ui->camera);
 
                 draw_line_lerp(ui->image.img_data, p, p_right,
                                map->points[y][x].color,
@@ -195,7 +204,11 @@ void draw_map(t_ui *ui, t_map *map)
                 rot_d.z = tmp_d.z;
                 rot_d.x += center_x;
                 rot_d.y += center_y;
-                t_screen p_down = iso_project(rot_d, &ui->proj, &ui->camera);
+                t_screen p_down;
+                if (ui->mode == MODE_CUBE)
+                    p_down = perspective_project(rot_d, &ui->proj, &ui->camera);
+                else
+                    p_down = iso_project(rot_d, &ui->proj, &ui->camera);
 
                 draw_line_lerp(ui->image.img_data, p, p_down,
                                map->points[y][x].color,
