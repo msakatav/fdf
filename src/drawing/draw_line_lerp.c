@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 03:03:35 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 07:54:14 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 08:44:41 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,12 @@ static int	get_lerped_color(const t_draw_line_param *p, int step, int len)
 
 static void	draw_pixel(const t_draw_line_param *p, int x, int y, int color)
 {
-	put_pixel(p->data, x, y, color, p->size_lien, p->bpp);
+	t_pixel_info	info;
+
+	info.data = p->data;
+	info.size_lien = p->size_lien;
+	info.bpp = p->bpp;
+	put_pixel(&info, x, y, color);
 }
 
 static void	init_line_state(t_line_state *s, const t_draw_line_param *p)

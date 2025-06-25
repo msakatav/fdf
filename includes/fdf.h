@@ -18,76 +18,6 @@
 # define WIDTH 800
 # define HEIGHT 600
 
-typedef enum
-{
-    MODE_NONE,
-    MODE_CUBE,
-    MODE_PLAY,
-    MODE_GRID
-}   t_mode;
-
-typedef struct s_projinfo {
-    float offset_x;
-    float offset_y;
-    float scale;
-    float z_scale;
-    float z_angle;
-} t_projinfo;
-
-typedef struct s_button {
-    int x, y, w, h;
-    char *label;
-    void (*on_click)(void *);
-    void *img; // 画像ポインタを追加
-    void *img_active;
-} t_button;
-
-typedef struct s_slider {
-    int x, y, w;
-    int min, max;
-    int value;
-    int knob_radius;
-} t_slider;
-
-typedef struct s_image {
-    void    *img;
-    char    *img_data;
-    int     bpp;
-    int     size_lien;
-    int     endian;
-}   t_image;
-
-// カメラ構造体
-typedef struct s_camera {
-    float offset_x;
-    float offset_y;
-    float zoom;
-} t_camera;
-
-typedef struct s_ui {
-    void        *mlx;
-    void        *win;
-    t_button    buttons[5];
-    int         button_count;
-    t_mode      mode;
-    t_mode      cube_mode;
-    t_mode      grid_mode;
-    t_slider    slider;
-    int         angle;
-    t_image     image;
-    t_projinfo  proj;
-    t_maps      *maps;   // 追加: マップ一覧へのポインタ
-	t_camera	camera;
-} t_ui;
-
-typedef struct s_screen
-{
-    int	x;
-    int y;
-}	t_screen;
-
-
-
 void    draw_map(t_ui *ui, t_map *map);
 void    draw_ui(t_ui *ui);
 void add_button(t_ui *ui, int x, int y, char *label, char *img_path, char *img_active_path, void (*cb)(void *));
@@ -118,5 +48,6 @@ void	rotate_z(t_vec3 *v, float cosz, float sinz);
 void	restore_center(t_vec3 *v, const t_draw_map_ctx *ctx);
 t_screen	project_point(const t_draw_map_ctx *ctx, t_vec3 v);
 void	draw_map_line(const t_draw_map_ctx *ctx, const t_line_info *info);
+void	put_pixel(const t_pixel_info *info, int x, int y, int color);
 
 #endif
