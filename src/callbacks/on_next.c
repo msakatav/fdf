@@ -1,38 +1,67 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   on_next.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/26 07:06:24 by msakata           #+#    #+#             */
+/*   Updated: 2025/06/26 07:08:15 by msakata          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-void on_next(void *p)
+static void	reset_camera(t_ui *ui)
 {
-    t_ui *ui = (t_ui *)p;
-    if (!ui->maps) return;
+	ui->camera.offset_x = 0.0f;
+	ui->camera.offset_y = 0.0f;
+	ui->camera.zoom = 1.0f;
+}
 
-    if (ui->maps->current < ui->maps->count - 1)
-        ui->maps->current++;
-    else
-        ui->maps->current = 0;
+static void	switch_to_next_map(t_ui *ui)
+{
+	if (ui->maps->current < ui->maps->count - 1)
+		ui->maps->current++;
+	else
+		ui->maps->current = 0;
+}
 
-        // カメラをリセット
-    ui->camera.offset_x = 0.0f;
-    ui->camera.offset_y = 0.0f;
-    ui->camera.zoom     = 1.0f;
+static void	reset_image(t_ui *ui)
+{
+	if (ui->image.img)
+		mlx_destroy_image(ui->mlx, ui->image.img);
+	ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
+	ui->image.img_data = mlx_get_data_addr(
+			ui->image.img, &ui->image.bpp,
+			&ui->image.size_lien, &ui->image.endian);
+}
 
-    // ★ ここで新しいマップに対して再度スケール等を計算する
-    // イメージを初期化し直す (古いイメージ破棄、再作成)
-    if (ui->image.img)
-        mlx_destroy_image(ui->mlx, ui->image.img);
-    ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
-    ui->image.img_data = mlx_get_data_addr(
-        ui->image.img, &ui->image.bpp,
-        &ui->image.size_lien, &ui->image.endian);
+static void	update_projection_and_draw(t_ui *ui)
+{
+	float	min_px;
+	float	max_px;
+	float	min_py;
+	float	max_py;
 
-    // スケール計算
-    adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
-    float min_px, max_px, min_py, max_py;
-    get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
-                         &min_px, &max_px, &min_py, &max_py);
-    set_scale_and_offset(&ui->proj, min_px, max_px, min_py, max_py);
+	adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
+	get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
+		&min_px, &max_px, &min_py, &max_py);
+	set_scale_and_offset(&ui->proj, min_px, max_px, min_py, max_py);
+	draw_map(ui, &ui->maps->maps[ui->maps->current]);
+	draw_ui(ui);
+	mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
+}
 
-    // 再描画
-    draw_map(ui, &ui->maps->maps[ui->maps->current]);
-    draw_ui(ui);
-    mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
+void	on_next(void *p)
+{
+	t_ui	*ui;
+
+	ui = (t_ui *)p;
+	if (!ui->maps)
+		return ;
+	switch_to_next_map(ui);
+	reset_camera(ui);
+	reset_image(ui);
+	update_projection_and_draw(ui);
 }

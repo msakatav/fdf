@@ -111,5 +111,6 @@ void draw_line_lerp(char *data, t_screen a, t_screen b,
                     int color_a, int color_b,
                     int size_lien, int bpp);
 void sphere_map_transform(int x, int y, int w, int h, float radius, float height, float *out_x, float *out_y, float *out_z);
+void draw_slider(t_ui *ui);
 
 #endif
