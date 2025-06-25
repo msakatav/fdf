@@ -6,7 +6,7 @@
 #    By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 20:55:41 by msakata           #+#    #+#              #
-#    Updated: 2025/06/26 06:34:34 by msakata          ###   ########.fr        #
+#    Updated: 2025/06/26 08:23:13 by msakata          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC =	src/gnl/get_next_line.c \
 		src/callbacks/on_prev.c \
 		src/drawing/draw_line_lerp.c \
 		src/drawing/draw_map.c \
+		src/drawing/draw_map_utils.c \
 		src/drawing/draw_slider.c \
 		src/drawing/draw_ui.c \
 		src/drawing/put_pixel.c \
