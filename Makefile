@@ -6,21 +6,38 @@
 #    By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 20:55:41 by msakata           #+#    #+#              #
-#    Updated: 2025/06/24 21:38:16 by msakata          ###   ########.fr        #
+#    Updated: 2025/06/26 06:34:34 by msakata          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 SRC =	src/gnl/get_next_line.c \
 		src/gnl/get_next_line_utils.c \
-		src/ui/ui.c \
-		src/camera.c \
-		src/parse_int_hex.c \
-		src/play_loop.c \
-		src/read_map.c \
-		src/test.c \
-		src/test_main.c
-
+		src/callbacks/on_cube.c \
+		src/callbacks/on_grid.c \
+		src/callbacks/on_next.c \
+		src/callbacks/on_play.c \
+		src/callbacks/on_prev.c \
+		src/drawing/draw_line_lerp.c \
+		src/drawing/draw_map.c \
+		src/drawing/draw_slider.c \
+		src/drawing/draw_ui.c \
+		src/drawing/put_pixel.c \
+		src/input/key_press.c \
+		src/load_map/parse_int_hex.c \
+		src/load_map/read_map.c \
+		src/math/lerp_color.c \
+		src/mouse/add_button.c \
+		src/mouse/mouse_click.c \
+		src/mouse/mouse_scroll.c \
+		src/playback/play_loop.c \
+		src/projection/get_projected_bounds.c \
+		src/projection/iso_project.c \
+		src/projection/perspective_project.c \
+		src/transform/adjust_z_scale.c \
+		src/transform/set_scale_and_offset.c \
+		src/transform/sphere_map_transform.c \
+		src/main.c
 
 INCLUDES = -Iincludes -Imlx_linux
 LINKER = -lXext -lX11 -lm -lz

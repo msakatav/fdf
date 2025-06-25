@@ -104,5 +104,12 @@ int mouse_scroll(int button, int x, int y, void *param);
 t_screen iso_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
 int play_loop(void *param);
 t_screen perspective_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
+void put_pixel(char *data, int x, int y, int color,
+    int size_lien, int bpp);
+int lerp_color(int color1, int color2, float t);
+void draw_line_lerp(char *data, t_screen a, t_screen b,
+                    int color_a, int color_b,
+                    int size_lien, int bpp);
+void sphere_map_transform(int x, int y, int w, int h, float radius, float height, float *out_x, float *out_y, float *out_z);
 
 #endif
