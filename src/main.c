@@ -1,15 +1,47 @@
-#include "read_map.h"
 #include "fdf.h"
+
+int	is_fdf_file(const char *filename)
+{
+    size_t	len = ft_strlen(filename);
+    if (len < 4)
+        return (0);
+    return (ft_strcmp(filename + len - 4, ".fdf") == 0);
+}
+
+int	close_window(void *param)
+{
+    (void)param;
+    exit(0);
+    return (0);
+}
 
 int main(int argc, char **argv)
 {
     t_maps maps;
     if (argc < 2)
     {
-        printf("Usage: %s map1.fdf [map2.fdf ...]\n", argv[0]);
+        ft_printf("Usage: %s map1.fdf [map2.fdf ...]\n", argv[0]);
         return 1;
     }
-    load_maps_from_args(argc, argv, &maps);
+
+    // .fdfファイルのみ抽出
+    char *fdf_argv[argc];
+    int   fdf_argc = 1; // argv[0]はプログラム名
+    fdf_argv[0] = argv[0];
+    for (int i = 1; i < argc; i++)
+    {
+        if (is_fdf_file(argv[i]))
+        {
+            fdf_argv[fdf_argc] = argv[i];
+            fdf_argc++;
+        }
+    }
+    if (fdf_argc == 1)
+    {
+        ft_printf("No .fdf files specified.\n");
+        return 1;
+    }
+    load_maps_from_args(fdf_argc, fdf_argv, &maps);
 
     // UI構造体
     t_ui ui;
@@ -61,8 +93,7 @@ int main(int argc, char **argv)
     get_projected_bounds(&maps.maps[maps.current], &ui.proj, &bounds);
 
     // 3. スケール・オフセット決定
-    set_scale_and_offset(&ui.proj, bounds.min_px, bounds.max_px, bounds.min_py, bounds.max_py);
-
+    set_scale_and_offset(&ui.proj, &bounds);
     // 4. マップ描画
     draw_map(&ui, &maps.maps[maps.current]);
 
@@ -77,6 +108,9 @@ int main(int argc, char **argv)
     // キー入力(押下)をフック
     mlx_hook(ui.win, 2, 1L << 0, key_press, &ui);
     mlx_hook(ui.win, 4, 1L << 2, mouse_scroll, &ui);
+    // バツボタンで終了
+    mlx_hook(ui.win, 17, 1L << 17, close_window, &ui);
+
     mlx_loop(ui.mlx);
     return 0;
 }

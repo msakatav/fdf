@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 08:04:10 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 08:15:00 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 10:18:01 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,14 @@ void	get_transformed_point(const t_draw_map_ctx *ctx, int x,
 	orig = ctx->map->points[y][x].pos;
 	if (ctx->is_grid)
 	{
-		sphere_map_transform(x, y, ctx->map->width, ctx->map->height,
-			ctx->radius, orig.z * ctx->ui->proj.z_scale,
-			&out->x, &out->y, &out->z);
+		t_sphere_map_param param;
+		param.x = x;
+		param.y = y;
+		param.w = ctx->map->width;
+		param.h = ctx->map->height;
+		param.radius = ctx->radius;
+		param.height = orig.z * ctx->ui->proj.z_scale;
+		sphere_map_transform(&param, out);
 	}
 	else
 	{

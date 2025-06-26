@@ -27,8 +27,6 @@ void 	on_play(void *p);
 void 	on_next(void *p);
 void 	on_grid(void *p);
 void	adjust_z_scale(t_map *map, t_projinfo *proj);
-void	set_scale_and_offset(t_projinfo *proj,
-    float min_px, float max_px, float min_py, float max_py);
 int key_press(int keycode, void *param);
 int mouse_scroll(int button, int x, int y, void *param);
 t_screen iso_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
@@ -36,7 +34,6 @@ int play_loop(void *param);
 t_screen perspective_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
 int lerp_color(int color1, int color2, float t);
 void draw_line_lerp(const t_draw_line_param *p);
-void sphere_map_transform(int x, int y, int w, int h, float radius, float height, float *out_x, float *out_y, float *out_z);
 void draw_slider(t_ui *ui);
 void	get_transformed_point(const t_draw_map_ctx *ctx, int x, int y, t_vec3 *out);
 void	rotate_z(t_vec3 *v, float cosz, float sinz);
@@ -46,5 +43,7 @@ void	draw_map_line(const t_draw_map_ctx *ctx, const t_line_info *info);
 void	put_pixel(const t_pixel_info *info, int x, int y, int color);
 void	add_button(t_ui *ui, t_button_param *param);
 void	get_projected_bounds(t_map *map, t_projinfo *proj, t_bounds *bounds);
+void	set_scale_and_offset(t_projinfo *proj, t_bounds *bounds);
+void sphere_map_transform(const t_sphere_map_param *param, t_vec3 *out);
 
 #endif

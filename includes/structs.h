@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 07:44:36 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 09:59:40 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 10:17:00 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,5 +199,25 @@ typedef struct s_proj_ctx
     float	factor;
     t_screen result;
 }	t_proj_ctx;
+
+typedef struct s_scaleinfo
+{
+    float	x_range;
+    float	y_range;
+    float	min_z;
+    float	max_z;
+    float	z_range;
+    float	xy_range;
+}	t_scaleinfo;
+
+typedef struct s_sphere_map_param
+{
+    int   x;
+    int   y;
+    int   w;
+    int   h;
+    float radius;
+    float height;
+}	t_sphere_map_param;
 
 #endif
