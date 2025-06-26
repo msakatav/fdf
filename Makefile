@@ -6,7 +6,7 @@
 #    By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 20:55:41 by msakata           #+#    #+#              #
-#    Updated: 2025/06/26 15:28:52 by msakata          ###   ########.fr        #
+#    Updated: 2025/06/26 16:35:49 by msakata          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ SRC =	src/gnl/get_next_line.c \
 
 INCLUDES = -Iincludes -Imlx_linux
 LINKER = -lXext -lX11 -lm -lz
-CFLAGS = -Wall -Wextra -Werror -g $(INCLUDES)
+CFLAGS = -O3 -Wall -Wextra -Werror $(INCLUDES)
 
 PRINTF_DIR = ./ft_printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
