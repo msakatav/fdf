@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 03:28:53 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 08:40:58 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 16:43:34 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	draw_ui(t_ui *ui)
 {
 	mlx_clear_window(ui->mlx, ui->win);
 	draw_key_bindings(ui);
-	mlx_string_put(ui->mlx, ui->win, 900, 360, 0xFFFFFF, "image");
 	draw_file_list(ui);
 	mlx_string_put(ui->mlx, ui->win, 850, 750, 0xFFFFFF,
 		ui->maps->maps[ui->maps->current].filename);

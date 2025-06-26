@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:18:02 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 15:24:02 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 16:51:30 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ void	free_ui(t_ui *ui)
         i++;
     }
     if (ui->mlx)
-        free(ui->mlx);
+	{
+        mlx_destroy_display(ui->mlx);
+		free(ui->mlx);
+	}
 }
 
 void	free_maps(t_maps *maps)
