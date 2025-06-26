@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 07:11:08 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 07:16:03 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 09:52:58 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ static void	update_projection_and_draw(t_ui *ui)
 	float	max_px;
 	float	min_py;
 	float	max_py;
+    t_bounds bounds;
 
 	adjust_z_scale(&ui->maps->maps[ui->maps->current], &ui->proj);
-	get_projected_bounds(&ui->maps->maps[ui->maps->current], &ui->proj,
-		&min_px, &max_px, &min_py, &max_py);
-	set_scale_and_offset(&ui->proj, min_px, max_px, min_py, max_py);
+    get_projected_bounds(&maps.maps[maps.current], &ui.proj, &bounds);
+    set_scale_and_offset(&ui.proj, bounds.min_px, bounds.max_px, bounds.min_py, bounds.max_py);
 	draw_map(ui, &ui->maps->maps[ui->maps->current]);
 	draw_ui(ui);
 	mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);

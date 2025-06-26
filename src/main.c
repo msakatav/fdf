@@ -57,12 +57,11 @@ int main(int argc, char **argv)
     adjust_z_scale(&maps.maps[maps.current], &ui.proj);
 
     // 2. 投影範囲取得
-    float min_px, max_px, min_py, max_py;
-    get_projected_bounds(&maps.maps[maps.current], &ui.proj,
-                         &min_px, &max_px, &min_py, &max_py);
+    t_bounds bounds;
+    get_projected_bounds(&maps.maps[maps.current], &ui.proj, &bounds);
 
     // 3. スケール・オフセット決定
-    set_scale_and_offset(&ui.proj, min_px, max_px, min_py, max_py);
+    set_scale_and_offset(&ui.proj, bounds.min_px, bounds.max_px, bounds.min_py, bounds.max_py);
 
     // 4. マップ描画
     draw_map(&ui, &maps.maps[maps.current]);

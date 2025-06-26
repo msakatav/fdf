@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 07:44:36 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 09:37:08 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 09:59:40 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,33 @@ typedef struct s_button_param
     char	*img_active_path;
     void	(*cb)(void *);
 }	t_button_param;
+
+typedef struct s_bounds
+{
+    float min_px;
+    float max_px;
+    float min_py;
+    float max_py;
+}	t_bounds;
+
+typedef struct s_point_ctx
+{
+    t_map		*map;
+    t_projinfo	*proj;
+    t_bounds	*bounds;
+    float		angle;
+}	t_point_ctx;
+
+typedef struct s_proj_ctx
+{
+    float	angle;
+    float	px;
+    float	py;
+    float	camera_z;
+    float	fov;
+    float	depth;
+    float	factor;
+    t_screen result;
+}	t_proj_ctx;
 
 #endif

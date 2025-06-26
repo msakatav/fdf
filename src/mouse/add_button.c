@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 03:27:17 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 09:36:51 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 09:42:39 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ void	add_button(t_ui *ui, t_button_param *param)
 	b->label = param->label;
 	b->on_click = param->cb;
 	b->img = mlx_xpm_file_to_image(ui->mlx, param->img_path, &b->w, &b->h);
-	b->img_active = mlx_xpm_file_to_image(ui->mlx, param->img_active_path, &b->w, &b->h);
+	b->img_active = mlx_xpm_file_to_image(ui->mlx, param->img_active_path,
+			&b->w, &b->h);
 }
