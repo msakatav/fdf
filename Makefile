@@ -6,7 +6,7 @@
 #    By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 20:55:41 by msakata           #+#    #+#              #
-#    Updated: 2025/06/26 09:38:26 by msakata          ###   ########.fr        #
+#    Updated: 2025/06/26 13:02:30 by msakata          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRC =	src/gnl/get_next_line.c \
 		src/transform/adjust_z_scale.c \
 		src/transform/set_scale_and_offset.c \
 		src/transform/sphere_map_transform.c \
+		src/utils.c \
 		src/main.c
 
 INCLUDES = -Iincludes -Imlx_linux
