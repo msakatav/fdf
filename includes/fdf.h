@@ -47,5 +47,7 @@ void	set_scale_and_offset(t_projinfo *proj, t_bounds *bounds);
 void sphere_map_transform(const t_sphere_map_param *param, t_vec3 *out);
 int	filter_fdf_files(int argc, char **argv, char **fdf_argv);
 void	init_ui(t_ui *ui, t_maps *maps);
+int	is_fdf_file(const char *filename);
+void	free_all(t_ui *ui);
 
 #endif

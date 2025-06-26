@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 03:07:28 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 08:53:45 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 15:26:01 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	key_press(int keycode, void *param)
 	ui = (t_ui *)param;
 	if (keycode == 65307)
 	{
-		mlx_destroy_window(ui->mlx, ui->win);
+		free_all(ui);
 		exit(0);
 	}
 	handle_move_keys(keycode, ui);

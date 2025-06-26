@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:07:12 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 13:07:13 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 15:24:42 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int	is_fdf_file(const char *filename)
 
 int	close_window(void *param)
 {
-	(void)param;
+	t_ui	*ui;
+
+	ui = (t_ui *)param;
+	free_all(ui);
 	exit(0);
 	return (0);
 }
@@ -70,6 +73,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	load_maps_from_args(fdf_argc, fdf_argv, &maps);
+	ft_bzero(&ui, sizeof(t_ui));
 	init_ui(&ui, &maps);
 	setup_projection_and_draw(&ui, &maps);
 	setup_hooks(&ui);
