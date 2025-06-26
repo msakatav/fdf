@@ -6,7 +6,7 @@
 #    By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 20:55:41 by msakata           #+#    #+#              #
-#    Updated: 2025/06/26 08:23:13 by msakata          ###   ########.fr        #
+#    Updated: 2025/06/26 09:38:26 by msakata          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC =	src/gnl/get_next_line.c \
 		src/input/key_press.c \
 		src/load_map/parse_int_hex.c \
 		src/load_map/read_map.c \
+		src/load_map/read_map_utils.c \
 		src/math/lerp_color.c \
 		src/mouse/add_button.c \
 		src/mouse/mouse_click.c \

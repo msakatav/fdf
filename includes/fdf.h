@@ -11,7 +11,7 @@
 # include "../ft_printf/includes/ft_printf.h"
 # include "get_next_line.h"
 # include "read_map.h"
-# include "utils_structs.h"
+# include "structs.h"
 
 # define WIN_W 1920
 # define WIN_H 1080
@@ -20,7 +20,6 @@
 
 void    draw_map(t_ui *ui, t_map *map);
 void    draw_ui(t_ui *ui);
-void add_button(t_ui *ui, int x, int y, char *label, char *img_path, char *img_active_path, void (*cb)(void *));
 int     mouse_click(int btn, int x, int y, void *p);
 void	on_cube(void *p);
 void 	on_prev(void *p);
@@ -37,8 +36,6 @@ int mouse_scroll(int button, int x, int y, void *param);
 t_screen iso_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
 int play_loop(void *param);
 t_screen perspective_project(t_vec3 pos, t_projinfo *proj, t_camera *cam);
-void put_pixel(char *data, int x, int y, int color,
-    int size_lien, int bpp);
 int lerp_color(int color1, int color2, float t);
 void draw_line_lerp(const t_draw_line_param *p);
 void sphere_map_transform(int x, int y, int w, int h, float radius, float height, float *out_x, float *out_y, float *out_z);
@@ -49,5 +46,6 @@ void	restore_center(t_vec3 *v, const t_draw_map_ctx *ctx);
 t_screen	project_point(const t_draw_map_ctx *ctx, t_vec3 v);
 void	draw_map_line(const t_draw_map_ctx *ctx, const t_line_info *info);
 void	put_pixel(const t_pixel_info *info, int x, int y, int color);
+void	add_button(t_ui *ui, t_button_param *param);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 08:19:19 by root              #+#    #+#             */
-/*   Updated: 2025/06/23 09:06:46 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 08:54:42 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,21 @@ static int	parse_hex(const char *str, int *i)
 
 int	ft_parse_int_hex(const char *str, int *z, int *color)
 {
-    int	i;
-    int	sign;
+	int	i;
+	int	sign;
 
-    i = 0;
-    *z = 0;
-    *color = 0xFFFFFF; // デフォルト色は白
-
-    while (ft_isspace(str[i]))
-        i++;
-    sign = parse_sign(str, &i);
-    *z = parse_decimal(str, &i) * sign;
-    if (str[i] != ',')
-        return (0);
-    i++;
-    // 0x または 0X をスキップ
-    if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X'))
-        i += 2;
-    *color = parse_hex(str, &i);
-    return (2);
+	i = 0;
+	*z = 0;
+	*color = 0xFFFFFF;
+	while (ft_isspace(str[i]))
+		i++;
+	sign = parse_sign(str, &i);
+	*z = parse_decimal(str, &i) * sign;
+	if (str[i] != ',')
+		return (0);
+	i++;
+	if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X'))
+		i += 2;
+	*color = parse_hex(str, &i);
+	return (2);
 }

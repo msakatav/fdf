@@ -6,12 +6,13 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 07:44:36 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 08:45:25 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 09:37:08 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_STRUCTS_H
 # define UTILS_STRUCTS_H
+#define MAX_MAPS 10
 
 typedef struct s_vec3
 {
@@ -153,5 +154,22 @@ typedef struct s_pixel_info
     int size_lien;
     int bpp;
 }	t_pixel_info;
+
+typedef struct s_rgb
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_rgb;
+
+typedef struct s_button_param
+{
+    int		x;
+    int		y;
+    char	*label;
+    char	*img_path;
+    char	*img_active_path;
+    void	(*cb)(void *);
+}	t_button_param;
 
 #endif
