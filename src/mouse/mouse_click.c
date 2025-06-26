@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 09:41:44 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 09:44:28 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/26 16:30:30 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,7 @@ static void	update_slider_and_redraw(t_ui *ui, t_slider *s, int x)
 {
 	s->value = (x - s->x) * (s->max - s->min) / s->w + s->min;
 	ui->proj.z_angle = (float)s->value;
-	if (ui->image.img)
-		mlx_destroy_image(ui->mlx, ui->image.img);
-	ui->image.img = mlx_new_image(ui->mlx, WIDTH, HEIGHT);
-	ui->image.img_data = mlx_get_data_addr(
-			ui->image.img, &ui->image.bpp,
-			&ui->image.size_lien, &ui->image.endian);
+	ft_memset(ui->image.img_data, 0, WIDTH * HEIGHT * (ui->image.bpp / 8));
 	draw_map(ui, &ui->maps->maps[ui->maps->current]);
 	draw_ui(ui);
 	mlx_put_image_to_window(ui->mlx, ui->win, ui->image.img, 500, 100);
