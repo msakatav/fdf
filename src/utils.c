@@ -6,7 +6,7 @@
 /*   By: msakata <msakata@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:00:41 by msakata           #+#    #+#             */
-/*   Updated: 2025/06/26 15:20:01 by msakata          ###   ########.fr       */
+/*   Updated: 2025/06/27 12:38:18 by msakata          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	init_ui(t_ui *ui, t_maps *maps)
 	ui->mlx = mlx_init();
 	if (ui->mlx == NULL)
 		exit(1);
-	ui->win = mlx_new_window(ui->mlx, WIN_W, WIN_H, "FDF Viewer UI");
+	ui->win = mlx_new_window(ui->mlx, WIN_W, WIN_H, "FDF Viewer");
 	init_ui_proj_and_camera(ui, maps);
 	init_ui_buttons(ui);
 	init_ui_slider_and_image(ui);
